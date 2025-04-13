@@ -5,7 +5,7 @@ VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EscolaTransparente.API", "EscolaTransparente.API\EscolaTransparente.API.csproj", "{E5EEED6F-DDA3-4AFF-833E-CFEC849C4746}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EscolaTransparente.APP", "EscolaTransparente.APP\EscolaTransparente.APP.csproj", "{AFD82EF8-6009-4372-ABB3-CC4B28126AB4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EscolaTransparente.Aplication", "EscolaTransparente.APP\EscolaTransparente.Aplication.csproj", "{AFD82EF8-6009-4372-ABB3-CC4B28126AB4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EscolaTransparente.Domain", "EscolaTransparente.Domain\EscolaTransparente.Domain.csproj", "{9FD40881-A725-415A-8E83-56114F84AF0E}"
 EndProject

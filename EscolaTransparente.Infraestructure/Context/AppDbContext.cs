@@ -23,3 +23,4 @@ namespace EscolaTransparente.Infraestructure.Context
         }
     }
 }
+    
