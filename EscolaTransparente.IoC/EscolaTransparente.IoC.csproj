@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EscolaTransparente.APP\EscolaTransparente.Application.csproj" />
+    <ProjectReference Include="..\EscolaTransparente.Infraestructure\EscolaTransparente.Infraestructure.csproj" />
+  </ItemGroup>
+
 </Project>
