@@ -53,6 +53,26 @@ namespace EscolaTransparente.Infraestructure.Context
                       .OnDelete(DeleteBehavior.Cascade);
             });
 
+           modelBuilder.Entity<AvaliacaoModel>(entity =>
+            {
+                entity.ToTable("Avaliacao");
+                entity.HasKey(e => e.AvaliacaoId);
+                entity.Property(e => e.AvaliacaoId).ValueGeneratedOnAdd();
+                entity.Property(e => e.Nota).IsRequired();
+                entity.Property(e => e.EscolaId).IsRequired();
+                entity.Property(e => e.UsuarioId).IsRequired();
+                entity.Property(e => e.CaracteristicaId).IsRequired();
+                entity.Property(e => e.Data).HasDefaultValueSql("GETDATE()");
+
+                entity.HasOne(e => e.Escola)
+                    .WithMany(c => c.Avaliacoes)
+                    .HasForeignKey(c => c.EscolaId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(e => e.Caracteristica)
+                    .HasForeignKey(c => c.CaracteristicaId);
+            });
+
             base.OnModelCreating(modelBuilder);
         }
     }
