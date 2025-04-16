@@ -11,5 +11,6 @@
 
         public EscolaModel Escola { get; set; }
         public CaracteristicaModel Caracteristica { get; set; }
+        public RespostaAvaliacaoModel RespostaAvaliacao { get; set; }
     }
 }

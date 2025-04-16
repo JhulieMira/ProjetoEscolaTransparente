@@ -53,10 +53,31 @@ namespace EscolaTransparente.Infraestructure.Context
                       .OnDelete(DeleteBehavior.Cascade);
             });
 
-           modelBuilder.Entity<AvaliacaoModel>(entity =>
+            modelBuilder.Entity<CaracteristicasEscolaModel>(entity =>
+            {
+                entity.ToTable("CaracteristicasEscola");
+                entity.HasKey(ce => ce.CaracteristicasEscolaId);
+
+                entity.Property(ce => ce.CaracteristicasEscolaId).ValueGeneratedOnAdd();
+                entity.Property(ce => ce.CaracteristicaId).IsRequired();
+                entity.Property(ce => ce.EscolaId).IsRequired();
+                entity.Property(ce => ce.NotaMedia).IsRequired();
+
+                entity.HasOne(ce => ce.Escola)
+                      .WithMany(e => e.CaracteristicasEscola)
+                      .HasForeignKey(ce => ce.EscolaId);
+
+                entity.HasOne(ce => ce.Caracteristica)
+                      .WithMany()
+                      .HasForeignKey(ce => ce.CaracteristicaId);
+            });
+
+            modelBuilder.Entity<AvaliacaoModel>(entity =>
             {
                 entity.ToTable("Avaliacao");
+
                 entity.HasKey(e => e.AvaliacaoId);
+
                 entity.Property(e => e.AvaliacaoId).ValueGeneratedOnAdd();
                 entity.Property(e => e.Nota).IsRequired();
                 entity.Property(e => e.EscolaId).IsRequired();
@@ -69,8 +90,95 @@ namespace EscolaTransparente.Infraestructure.Context
                     .HasForeignKey(c => c.EscolaId)
                     .OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasOne(e => e.Caracteristica)
-                    .HasForeignKey(c => c.CaracteristicaId);
+            });
+
+            modelBuilder.Entity<CaracteristicaModel>(entity =>
+            {
+                entity.ToTable("Caracteristica");
+
+                entity.HasKey(c => c.CaracteristicaId);
+
+                entity.Property(c => c.CaracteristicaId).ValueGeneratedOnAdd();
+                entity.Property(c => c.Descricao).IsRequired();
+            });
+
+            modelBuilder.Entity<ContatoModel>(entity =>
+            {
+                entity.ToTable("Contato");
+
+                entity.HasKey(c => c.ContatoId);
+
+                entity.Property(c => c.ContatoId)
+                    .ValueGeneratedOnAdd();
+                entity.Property(c => c.Email)
+                    .HasMaxLength(100);
+                entity.Property(c => c.UrlSite)
+                    .HasMaxLength(200);
+                entity.Property(c => c.NumeroCelular)
+                    .HasMaxLength(20)
+                    .IsRequired();
+                entity.Property(c => c.NumeroFixo)
+                    .HasMaxLength(20);
+                entity.Property(c => c.EscolaId)
+                    .IsRequired();
+
+                entity.HasOne(c => c.Escola)
+                    .WithOne(e => e.Contato)
+                    .HasForeignKey<ContatoModel>(c => c.EscolaId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<EnderecoModel>(entity =>
+            {
+                entity.ToTable("Endereco");
+
+                entity.HasKey(e => e.EnderecoId);
+
+                entity.Property(e => e.EnderecoId)
+                    .ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Endereco)
+                    .IsRequired();
+                entity.Property(e => e.Cidade)
+                    .IsRequired()
+                    .HasMaxLength(300);
+                entity.Property(e => e.Estado)
+                    .IsRequired(); 
+                entity.Property(e => e.CEP)
+                    .IsRequired()
+                    .HasMaxLength(9)
+                    .IsFixedLength();  
+                entity.Property(e => e.Latitude)
+                    .HasMaxLength(20);
+                entity.Property(e => e.Longitude)
+                    .HasMaxLength(20);
+
+                entity.HasOne(e => e.Escola)
+                    .WithOne(esc => esc.Endereco)
+                    .HasForeignKey<EnderecoModel>(e => e.EscolaId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<RespostaAvaliacaoModel>(entity =>
+            {
+                entity.ToTable("RespostaAvaliacao");
+
+                entity.HasKey(r => r.RespostaId);
+                entity.Property(r => r.RespostaId)
+                    .ValueGeneratedOnAdd();
+                entity.Property(r => r.AvaliacaoId)
+                    .IsRequired();
+                entity.Property(r => r.UsuarioId)
+                    .IsRequired()
+                    .HasMaxLength(450); 
+                entity.Property(r => r.Resposta)
+                    .IsRequired()
+                    .HasMaxLength(1000);
+
+                entity.HasOne(r => r.Avaliacao)
+                    .WithOne(a => a.RespostaAvaliacao)
+                    .HasForeignKey<RespostaAvaliacaoModel>(a => a.AvaliacaoId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             base.OnModelCreating(modelBuilder);
