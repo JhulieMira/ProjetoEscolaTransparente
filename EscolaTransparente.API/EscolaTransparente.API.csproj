@@ -9,7 +9,12 @@
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
-
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.15">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EscolaTransparente.APP\EscolaTransparente.Application.csproj" />
     <ProjectReference Include="..\EscolaTransparente.Infraestructure\EscolaTransparente.Infraestructure.csproj" />

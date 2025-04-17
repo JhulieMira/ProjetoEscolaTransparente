@@ -5,8 +5,9 @@ namespace EscolaTransparente.Infraestructure.Context
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions options) : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
+
         }
 
         public DbSet<EscolaModel> Escolas { get; set; }
@@ -90,6 +91,15 @@ namespace EscolaTransparente.Infraestructure.Context
                     .HasForeignKey(c => c.EscolaId)
                     .OnDelete(DeleteBehavior.Cascade);
 
+                entity.HasOne(e => e.Caracteristica)
+                    .WithMany()
+                    .HasForeignKey(e => e.CaracteristicaId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(e => e.RespostaAvaliacao)
+                      .WithOne(a => a.Avaliacao)
+                      .HasForeignKey<RespostaAvaliacaoModel>(a => a.RespostaId)
+                        .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<CaracteristicaModel>(entity =>
