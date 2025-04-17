@@ -1,5 +1,7 @@
+using EscolaTransparente.Domain.Entities;
 using EscolaTransparente.Infraestructure.Context;
 using EscolaTransparente.IoC.DependencyContainer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +12,21 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.RegisterServices(builder.Configuration);
+
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
+    {   
+        options.Authority = "https://localhost:5001/";
+        options.RequireHttpsMetadata = false;
+        options.Audience = "api1";
+    });
+
+builder.Services.AddIdentityCore<Usuario>()
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddApiEndpoints();
+
+builder.Services.RegisterServices(builder.Configuration);   
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -25,10 +41,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-
 app.MapControllers();
 
-
+app.MapIdentityApi<Usuario>();
 
 app.Run();

@@ -1,9 +1,11 @@
-﻿using EscolaTransparente.Infraestructure.Data.DataModel;
+﻿using EscolaTransparente.Domain.Entities;
+using EscolaTransparente.Infraestructure.Data.DataModel;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace EscolaTransparente.Infraestructure.Context
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<Usuario>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -17,6 +19,7 @@ namespace EscolaTransparente.Infraestructure.Context
         public DbSet<ContatoModel> Contato { get; set; }
         public DbSet<EnderecoModel> Enderecos { get; set; }
         public DbSet<RespostaAvaliacaoModel> RespostasAvaliacoes { get; set; }
+        public DbSet<Usuario> Usuario { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -190,6 +193,12 @@ namespace EscolaTransparente.Infraestructure.Context
                     .HasForeignKey<RespostaAvaliacaoModel>(a => a.AvaliacaoId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
+
+            modelBuilder.Entity<Usuario>(entity =>
+            {
+                entity.ToTable("Usuario");
+            });
+
 
             base.OnModelCreating(modelBuilder);
         }
