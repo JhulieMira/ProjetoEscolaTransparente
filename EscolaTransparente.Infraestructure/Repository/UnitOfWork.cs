@@ -1,0 +1,26 @@
+﻿using EscolaTransparente.Domain.Interfaces.Repositories;
+using EscolaTransparente.Infraestructure.Context;
+using Microsoft.EntityFrameworkCore;
+
+namespace EscolaTransparente.Infraestructure.Repository
+{
+    public class UnitOfWork : IUnitOfWork
+    {
+        public DbContext Context { get; }
+
+        public UnitOfWork(AppDbContext dbContext)
+        {
+            Context = dbContext;
+        }
+
+        public void Commit()
+        {
+            Context.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            Context.Dispose();
+        }
+    }
+}
