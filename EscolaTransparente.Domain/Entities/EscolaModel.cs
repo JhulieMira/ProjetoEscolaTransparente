@@ -1,6 +1,6 @@
 ﻿using EscolaTransparente.Infraestructure.Data.Enums;
 
-namespace EscolaTransparente.Infraestructure.Data.DataModel
+namespace EscolaTransparente.Domain.Entities
 {
     public class EscolaModel
     {

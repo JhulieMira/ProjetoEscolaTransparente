@@ -1,4 +1,4 @@
-﻿namespace EscolaTransparente.Infraestructure.Data.DataModel
+﻿namespace EscolaTransparente.Domain.Entities
 {
     public class RespostaAvaliacaoModel
     {
