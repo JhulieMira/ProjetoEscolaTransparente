@@ -18,6 +18,11 @@ namespace EscolaTransparente.Infraestructure.Repository
             Context.SaveChanges();
         }
 
+        public async Task CommitAsync()
+        {
+            await Context.SaveChangesAsync();
+        }   
+
         public void Dispose()
         {
             Context.Dispose();

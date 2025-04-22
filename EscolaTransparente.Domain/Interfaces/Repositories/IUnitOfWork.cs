@@ -5,5 +5,6 @@ namespace EscolaTransparente.Domain.Interfaces.Repositories
     {
         DbContext Context { get; }
         void Commit();
+        Task CommitAsync();
     }
 }

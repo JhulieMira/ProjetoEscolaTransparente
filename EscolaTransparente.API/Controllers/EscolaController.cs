@@ -1,4 +1,5 @@
 ﻿using EscolaTransparente.Application.Data.DataTransferObjects.Escola;
+using EscolaTransparente.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -8,12 +9,19 @@ namespace EscolaTransparente.API.Controllers
     [Route("[controller]")]
     public class EscolaController : ControllerBase  
     {
+        private readonly IEscolaAppService _escolaService;
+
+        public EscolaController(IEscolaAppService escolaService)
+        {
+            _escolaService = escolaService;
+        }
+
         [HttpGet("ObterEscolaPorId")]
         public IActionResult ObterEscolaPorId(int escolaId)
         {
             try
             {
-                return Ok();
+                return Ok(_escolaService.ObterEscolaPorId(escolaId));
             }
             catch (Exception ex)
             {
@@ -26,7 +34,7 @@ namespace EscolaTransparente.API.Controllers
         {
             try
             {
-                return Ok();
+                return Ok(_escolaService.AdicionarEscola(escolaDTO));
             }
             catch (Exception ex)
             {
