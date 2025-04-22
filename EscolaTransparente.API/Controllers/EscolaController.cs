@@ -10,7 +10,6 @@ namespace EscolaTransparente.API.Controllers
     public class EscolaController : ControllerBase  
     {
         private readonly IEscolaAppService _escolaService;
-
         public EscolaController(IEscolaAppService escolaService)
         {
             _escolaService = escolaService;
