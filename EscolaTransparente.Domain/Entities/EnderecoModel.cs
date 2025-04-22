@@ -1,4 +1,5 @@
 ﻿namespace EscolaTransparente.Domain.Entities
+{
     public class EnderecoModel
     {
         public int EnderecoId { get; set; }

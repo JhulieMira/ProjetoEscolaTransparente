@@ -1,6 +1,6 @@
 ﻿using EscolaTransparente.Domain.Interfaces.Repositories;
 using EscolaTransparente.Infraestructure.Context;
-using EscolaTransparente.Infraestructure.Data.DataModel;
+using EscolaTransparente.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace EscolaTransparente.Infraestructure.Repository

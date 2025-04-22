@@ -10,6 +10,7 @@ namespace EscolaTransparente.IoC.DependencyContainer
     {
         public static void RegisterServices(this IServiceCollection services, IConfiguration config)
         {
+            services.AddAutoMapper(typeof(DependencyContainer));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IEscolaRepository, EscolaRepository>();
 

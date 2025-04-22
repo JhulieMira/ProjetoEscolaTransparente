@@ -1,6 +1,5 @@
 ﻿using EscolaTransparente.Application.Data.DataTransferObjects.Caracteristica;
 using EscolaTransparente.Application.Data.DataTransferObjects.Escola;
-using EscolaTransparente.Infraestructure.Data.DataModel;
 
 namespace EscolaTransparente.Application.Data.DataTransferObjects.Avaliacao
 {

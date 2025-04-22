@@ -1,4 +1,10 @@
 ﻿using AutoMapper;
+using EscolaTransparente.Application.Data.DataTransferObjects.Avaliacao;
+using EscolaTransparente.Application.Data.DataTransferObjects.Caracteristica;
+using EscolaTransparente.Application.Data.DataTransferObjects.Contato;
+using EscolaTransparente.Application.Data.DataTransferObjects.Endereco;
+using EscolaTransparente.Application.Data.DataTransferObjects.Escola;
+using EscolaTransparente.Domain.Entities;
 
 namespace EscolaTransparente.Application.Config
 {
@@ -6,14 +12,13 @@ namespace EscolaTransparente.Application.Config
     {
         public AutoMapperConfig()
         {
-            CreateMap<Domain.Entities., Data.DataTransferObjects.Escola.EscolaDTO>()
-                .ForMember(dest => dest.Contato, opt => opt.MapFrom(src => src.Contato))
-                .ForMember(dest => dest.Endereco, opt => opt.MapFrom(src => src.Endereco));
-            CreateMap<Data.DataTransferObjects.Escola.EscolaDTO, Domain.Entities.Escola>()
-                .ForMember(dest => dest.Contato, opt => opt.MapFrom(src => src.Contato))
-                .ForMember(dest => dest.Endereco, opt => opt.MapFrom(src => src.Endereco));
+            CreateMap<Domain.Entities.EscolaModel, Data.DataTransferObjects.Escola.EscolaDTO>().ReverseMap();
+            CreateMap<ContatoModel, ContatoDTO>().ReverseMap();
+            CreateMap<AvaliacaoModel, AvaliacaoDTO>().ReverseMap();
+            CreateMap<CaracteristicaModel, CaracteristicasEscolaDTO>().ReverseMap();
+            CreateMap<EnderecoModel, EnderecoDTO>().ReverseMap();
+            CreateMap<EscolaModel, EscolaDTO>().ReverseMap();
+            CreateMap<RespostaAvaliacaoModel, RespostaAvaliacaoDTO>().ReverseMap(); 
         }
-    }
-    {
     }
 }

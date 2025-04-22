@@ -1,4 +1,4 @@
-﻿using EscolaTransparente.Infraestructure.Data.DataModel;
+﻿using EscolaTransparente.Domain.Entities;
 
 namespace EscolaTransparente.Domain.Interfaces.Repositories
 {

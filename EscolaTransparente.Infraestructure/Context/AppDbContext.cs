@@ -1,5 +1,4 @@
 ﻿using EscolaTransparente.Domain.Entities;
-using EscolaTransparente.Infraestructure.Data.DataModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
