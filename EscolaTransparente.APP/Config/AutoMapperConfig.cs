@@ -16,13 +16,33 @@ namespace EscolaTransparente.Application.Config
             //var caracteristicaMap = CreateMap<CaracteristicasEscolaModel, CaracteristicasEscolaReadDTO>();
             //caracteristicaMap.ForMember(dest => dest.Caracteristica, src => src.MapFrom(fld => fld.Caracteristica.Descricao));
 
-            CreateMap<ContatoModel, ContatoReadDTO>().ReverseMap();
-            CreateMap<AvaliacaoModel, AvaliacaoReadDTO>().ReverseMap();
-            //CreateMap<CaracteristicaModel, CaracteristicaDTO>().ReverseMap();
-            CreateMap<CaracteristicasEscolaModel, CaracteristicasEscolaReadDTO>().ReverseMap();
-            CreateMap<EnderecoModel, EnderecoReadDTO>().ReverseMap();
-            CreateMap<EscolaModel, EscolaReadDTO>().ReverseMap();
-            CreateMap<RespostaAvaliacaoModel, RespostaReadAvaliacaoDTO>().ReverseMap(); 
+            // Contato mappings
+            CreateMap<ContatoModel, ContatoReadDTO>();
+            CreateMap<ContatoInsertDTO, ContatoModel>();
+            
+            // Avaliacao mappings
+            CreateMap<AvaliacaoModel, AvaliacaoReadDTO>();
+            CreateMap<AvaliacaoInsertDTO, AvaliacaoModel>();
+            
+            // Caracteristica mappings
+            CreateMap<CaracteristicaInsertDTO, CaracteristicaModel>();
+            CreateMap<CaracteristicasEscolaModel, CaracteristicasEscolaReadDTO>()
+                .ForMember(dest => dest.Descricao, opt => opt.MapFrom(src => src.Caracteristica.Descricao));
+
+            CreateMap<CaracteristicasEscolaInsertDTO, CaracteristicasEscolaModel>()
+                .ForMember(dest => dest.Caracteristica.CaracteristicaId, opt => opt.MapFrom(src => src.CaracteristicaId))
+                .ForMember(dest => dest.Caracteristica.Descricao, opt => opt.MapFrom(src => src.Descricao));
+            // Endereco mappings
+            CreateMap<EnderecoModel, EnderecoReadDTO>();
+            CreateMap<EnderecoInsertDTO, EnderecoModel>();
+            
+            // Escola mappings
+            CreateMap<EscolaModel, EscolaReadDTO>();
+            CreateMap<EscolaInsertDTO, EscolaModel>();
+            
+            // RespostaAvaliacao mappings
+            CreateMap<RespostaAvaliacaoModel, RespostaReadAvaliacaoDTO>();
+            CreateMap<RespostaAvaliacaoInsertDTO, RespostaAvaliacaoModel>();
         }
     }
 }
