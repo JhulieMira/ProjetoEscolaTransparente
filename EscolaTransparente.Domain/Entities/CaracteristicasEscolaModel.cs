@@ -9,6 +9,7 @@ namespace EscolaTransparente.Domain.Entities
         public int CaracteristicaId { get; set; }
         public int EscolaId { get; set; }
         public short NotaMedia { get; set; }
+        public string Descricao { get; set; }
 
         public virtual EscolaModel Escola { get; set; }
         public virtual CaracteristicaModel Caracteristica { get; set; }
