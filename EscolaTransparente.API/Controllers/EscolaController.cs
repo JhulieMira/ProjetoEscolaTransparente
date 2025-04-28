@@ -1,8 +1,6 @@
 ﻿using EscolaTransparente.Application.Data.DataTransferObjects.Escola;
 using EscolaTransparente.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace EscolaTransparente.API.Controllers
 {
@@ -16,8 +14,8 @@ namespace EscolaTransparente.API.Controllers
             _escolaService = escolaService;
         }
 
-        [HttpGet("ObterEscolaPorId")]
-        public async Task<ActionResult<EscolaReadDTO>> ObterEscolaPorId(int escolaId)
+        [HttpGet("{escolaId:int}")]
+        public async Task<ActionResult<EscolaReadDTO>> ObterPorId([FromRoute]int escolaId)
         {
             try
             {
@@ -31,8 +29,8 @@ namespace EscolaTransparente.API.Controllers
             }
         }
 
-        [HttpPost("CadastrarEscola")]
-        public async Task<ActionResult<EscolaReadDTO>> CadastrarEscola(EscolaReadDTO escolaDTO)
+        [HttpPost("")]
+        public async Task<ActionResult<EscolaInsertDTO>> Cadastrar([FromBody]EscolaInsertDTO escolaDTO)
         {
             try
             {

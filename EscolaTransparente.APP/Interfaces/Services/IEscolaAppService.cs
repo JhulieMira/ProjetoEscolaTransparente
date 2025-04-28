@@ -5,6 +5,6 @@ namespace EscolaTransparente.Application.Interfaces.Services
     public interface IEscolaAppService
     {
         Task<EscolaReadDTO?> ObterEscolaPorId(int escolaId);
-        Task<EscolaReadDTO> AdicionarEscola(EscolaReadDTO escola);
+        Task<EscolaReadDTO> AdicionarEscola(EscolaInsertDTO escola);
     }
 }

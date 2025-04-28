@@ -30,8 +30,8 @@ namespace EscolaTransparente.Application.Config
                 .ForMember(dest => dest.Descricao, opt => opt.MapFrom(src => src.Caracteristica.Descricao));
 
             CreateMap<CaracteristicasEscolaInsertDTO, CaracteristicasEscolaModel>()
-                .ForMember(dest => dest.Caracteristica.CaracteristicaId, opt => opt.MapFrom(src => src.CaracteristicaId))
-                .ForMember(dest => dest.Caracteristica.Descricao, opt => opt.MapFrom(src => src.Descricao));
+                 .ForPath(dest => dest.Caracteristica.CaracteristicaId, opt => opt.MapFrom(src => src.CaracteristicaId))
+                 .ForPath(dest => dest.Caracteristica.Descricao, opt => opt.MapFrom(src => src.Descricao));
             // Endereco mappings
             CreateMap<EnderecoModel, EnderecoReadDTO>();
             CreateMap<EnderecoInsertDTO, EnderecoModel>();

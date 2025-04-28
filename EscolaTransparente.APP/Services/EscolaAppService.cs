@@ -16,7 +16,7 @@ namespace EscolaTransparente.Application.Services
             _escolaService = escolaService;
         }
 
-        public async Task<EscolaReadDTO?> AdicionarEscola(EscolaReadDTO escola)
+        public async Task<EscolaReadDTO?> AdicionarEscola(EscolaInsertDTO escola)
         {
             var escolaModel = _mapper.Map<Domain.Entities.EscolaModel>(escola);
             var escolaResult = await _escolaService.AdicionarEscola(escolaModel);
