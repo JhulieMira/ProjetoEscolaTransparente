@@ -1,7 +1,10 @@
-﻿namespace EscolaTransparente.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace EscolaTransparente.Domain.Entities
 {
     public class ContatoModel
     {
+        [Key]
         public int ContatoId { get; set; }
         public int EscolaId { get; set; }
         public string Email { get; set; }

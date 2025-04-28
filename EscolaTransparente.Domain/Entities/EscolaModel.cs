@@ -1,9 +1,11 @@
-﻿using EscolaTransparente.Infraestructure.Data.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using EscolaTransparente.Infraestructure.Data.Enums;
 
 namespace EscolaTransparente.Domain.Entities
 {
     public class EscolaModel
     {
+        [Key]
         public int EscolaId { get; set; }
         public NivelEnsino NivelEnsino { get; set; }
         public string Nome { get; set; }

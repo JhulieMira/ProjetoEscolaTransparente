@@ -1,7 +1,10 @@
-﻿namespace EscolaTransparente.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace EscolaTransparente.Domain.Entities
 {
     public class EnderecoModel
     {
+        [Key]
         public int EnderecoId { get; set; }
         public int EscolaId { get; set; }
         public string Endereco { get; set; }
