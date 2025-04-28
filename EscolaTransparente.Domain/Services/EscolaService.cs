@@ -23,9 +23,9 @@ namespace EscolaTransparente.Domain.Services
             return escola;
         }
 
-        public Task<EscolaModel?> ObterEscolaPorId(int escolaId)
+        public async Task<EscolaModel?> ObterEscolaPorId(int escolaId)
         {
-            throw new NotImplementedException();
+            return await _escolaRepository.GetByIdAsync(escolaId);
         }
     }
 }

@@ -10,14 +10,16 @@ namespace EscolaTransparente.Application.Services
         private readonly IMapper _mapper;
         private readonly IEscolaService _escolaService;
 
-        public EscolaAppService(IMapper mapper)
+        public EscolaAppService(IMapper mapper, IEscolaService escolaService)
         {
             _mapper = mapper;
-         
+            _escolaService = escolaService;
         }
+
         public async Task<EscolaDTO?> AdicionarEscola(EscolaDTO escola)
         {
-            var escolaResult = _escolaService.AdicionarEscola(_mapper.Map<Domain.Entities.EscolaModel>(escola));
+            var escolaModel = _mapper.Map<Domain.Entities.EscolaModel>(escola);
+            var escolaResult = await _escolaService.AdicionarEscola(escolaModel);
             return _mapper.Map<EscolaDTO>(escolaResult);
         }
 
