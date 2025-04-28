@@ -7,12 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Data\DataTransferObjects\NovaPasta\**" />
-    <EmbeddedResource Remove="Data\DataTransferObjects\NovaPasta\**" />
-    <None Remove="Data\DataTransferObjects\NovaPasta\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="14.0.0" />
   </ItemGroup>
 

@@ -65,6 +65,7 @@ namespace EscolaTransparente.Infraestructure.Context
                 entity.Property(ce => ce.CaracteristicaId).IsRequired();
                 entity.Property(ce => ce.EscolaId).IsRequired();
                 entity.Property(ce => ce.NotaMedia).IsRequired();
+                entity.Property(ce => ce.Descricao);
 
                 entity.HasOne(ce => ce.Escola)
                       .WithMany(e => e.CaracteristicasEscola)

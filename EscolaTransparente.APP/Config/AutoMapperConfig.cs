@@ -13,8 +13,8 @@ namespace EscolaTransparente.Application.Config
     {
         public AutoMapperConfig()
         {
-            var caracteristicaMap = CreateMap<CaracteristicasEscolaModel, CaracteristicasEscolaReadDTO>();
-            caracteristicaMap.ForMember(dest => dest.Caracteristica, src => src.MapFrom(fld => fld.Caracteristica.Descricao));
+            //var caracteristicaMap = CreateMap<CaracteristicasEscolaModel, CaracteristicasEscolaReadDTO>();
+            //caracteristicaMap.ForMember(dest => dest.Caracteristica, src => src.MapFrom(fld => fld.Caracteristica.Descricao));
 
             CreateMap<ContatoModel, ContatoReadDTO>().ReverseMap();
             CreateMap<AvaliacaoModel, AvaliacaoReadDTO>().ReverseMap();
