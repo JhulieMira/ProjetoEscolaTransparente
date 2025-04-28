@@ -1,8 +1,7 @@
 ﻿namespace EscolaTransparente.Application.Data.DataTransferObjects.Avaliacao
 {
-    public class AvaliacaoDTO
+    public class AvaliacaoInsertDTO
     {
-        public int AvaliacaoId { get; set; }
         public int EscolaId { get; set; }
         public string UsuarioId { get; set; }
         public int CaracteristicaId { get; set; }

@@ -2,7 +2,7 @@
 
 namespace EscolaTransparente.Application.Data.DataTransferObjects.Endereco
 {
-    public class EnderecoDTO
+    public class EnderecoReadDTO
     {
         public int EnderecoId { get; set; }
         public int EscolaId { get; set; }

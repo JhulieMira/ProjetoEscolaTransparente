@@ -16,19 +16,19 @@ namespace EscolaTransparente.Application.Services
             _escolaService = escolaService;
         }
 
-        public async Task<EscolaDTO?> AdicionarEscola(EscolaDTO escola)
+        public async Task<EscolaReadDTO?> AdicionarEscola(EscolaReadDTO escola)
         {
             var escolaModel = _mapper.Map<Domain.Entities.EscolaModel>(escola);
             var escolaResult = await _escolaService.AdicionarEscola(escolaModel);
-            return _mapper.Map<EscolaDTO>(escolaResult);
+            return _mapper.Map<EscolaReadDTO>(escolaResult);
         }
 
-        public async Task<EscolaDTO?> ObterEscolaPorId(int escolaId)
+        public async Task<EscolaReadDTO?> ObterEscolaPorId(int escolaId)
         {
             var escola = await _escolaService.ObterEscolaPorId(escolaId);
             if (escola is null) return null;
 
-            return _mapper.Map<EscolaDTO>(escola);  
+            return _mapper.Map<EscolaReadDTO>(escola);  
         }
     }
 }

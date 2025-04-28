@@ -17,7 +17,7 @@ namespace EscolaTransparente.API.Controllers
         }
 
         [HttpGet("ObterEscolaPorId")]
-        public async Task<ActionResult<EscolaDTO>> ObterEscolaPorId(int escolaId)
+        public async Task<ActionResult<EscolaReadDTO>> ObterEscolaPorId(int escolaId)
         {
             try
             {
@@ -32,7 +32,7 @@ namespace EscolaTransparente.API.Controllers
         }
 
         [HttpPost("CadastrarEscola")]
-        public async Task<ActionResult<EscolaDTO>> CadastrarEscola(EscolaDTO escolaDTO)
+        public async Task<ActionResult<EscolaReadDTO>> CadastrarEscola(EscolaReadDTO escolaDTO)
         {
             try
             {

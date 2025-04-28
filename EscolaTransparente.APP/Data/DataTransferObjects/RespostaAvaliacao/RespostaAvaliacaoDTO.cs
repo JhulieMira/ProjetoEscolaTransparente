@@ -1,4 +1,4 @@
-﻿namespace EscolaTransparente.Application.Data.DataTransferObjects.Avaliacao
+﻿namespace EscolaTransparente.Application.Data.DataTransferObjects.RespostaAvaliacao
 {
     public class RespostaAvaliacaoDTO
     {

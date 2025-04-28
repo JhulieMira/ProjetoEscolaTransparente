@@ -2,7 +2,7 @@
 
 namespace EscolaTransparente.Application.Data.DataTransferObjects.Contato
 {
-    public class ContatoDTO
+    public class ContatoReadDTO
     {
         public int ContatoId { get; set; }
         public int EscolaId { get; set; }
