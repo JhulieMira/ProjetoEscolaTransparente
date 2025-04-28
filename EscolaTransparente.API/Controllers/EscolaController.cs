@@ -39,6 +39,6 @@ namespace EscolaTransparente.API.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }
+            }
     }
 }

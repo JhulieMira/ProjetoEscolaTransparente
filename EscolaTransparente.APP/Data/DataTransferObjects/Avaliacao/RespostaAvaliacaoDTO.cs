@@ -6,7 +6,5 @@
         public int AvaliacaoId { get; set; }
         public string UsuarioId { get; set; }
         public string Resposta { get; set; }
-
-        public AvaliacaoDTO Avaliacao { get; set; }
     }
 }

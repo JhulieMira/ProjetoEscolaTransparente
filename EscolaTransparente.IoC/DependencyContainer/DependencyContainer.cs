@@ -3,6 +3,7 @@ using EscolaTransparente.Infraestructure.Context;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using EscolaTransparente.Infraestructure.Repository;
+using EscolaTransparente.Application.Config;
 
 namespace EscolaTransparente.IoC.DependencyContainer
 {
@@ -16,7 +17,7 @@ namespace EscolaTransparente.IoC.DependencyContainer
             //Domain
             services.AddScoped<Domain.Interfaces.Services.IEscolaService, Domain.Services.EscolaService>();
 
-            services.AddAutoMapper(typeof(DependencyContainer));
+            services.AddAutoMapper(typeof(AutoMapperConfig));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IEscolaRepository, EscolaRepository>();
 

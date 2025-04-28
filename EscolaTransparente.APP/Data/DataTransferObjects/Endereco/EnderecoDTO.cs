@@ -12,7 +12,5 @@ namespace EscolaTransparente.Application.Data.DataTransferObjects.Endereco
         public string CEP { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
-
-        public EscolaDTO Escola { get; set; }
     }
 }

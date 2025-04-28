@@ -9,6 +9,6 @@
         public string NumeroCelular { get; set; }
         public string NumeroFixo { get; set; }
 
-        public EscolaModel Escola { get; set; }
+        public virtual EscolaModel Escola { get; set; }
     }
 }

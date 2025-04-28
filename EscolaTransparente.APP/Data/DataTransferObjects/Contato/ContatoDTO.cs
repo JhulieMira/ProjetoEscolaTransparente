@@ -10,7 +10,5 @@ namespace EscolaTransparente.Application.Data.DataTransferObjects.Contato
         public string UrlSite { get; set; }
         public string NumeroCelular { get; set; }
         public string NumeroFixo { get; set; }
-
-        public EscolaDTO Escola { get; set; }
     }
 }

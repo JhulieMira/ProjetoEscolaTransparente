@@ -9,8 +9,8 @@
         public short Nota { get; set; }
         public DateTime Data { get; set; }
 
-        public EscolaModel Escola { get; set; }
-        public CaracteristicaModel Caracteristica { get; set; }
-        public RespostaAvaliacaoModel RespostaAvaliacao { get; set; }
+        public virtual EscolaModel Escola { get; set; }
+        public virtual CaracteristicaModel Caracteristica { get; set; }
+        public virtual RespostaAvaliacaoModel RespostaAvaliacao { get; set; }
     }
 }

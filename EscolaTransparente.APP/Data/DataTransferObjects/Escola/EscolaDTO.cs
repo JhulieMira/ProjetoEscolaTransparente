@@ -20,10 +20,9 @@ namespace EscolaTransparente.Application.Data.DataTransferObjects.Escola
         public NivelEnsino NivelEnsino { get; set; }
         public TipoInstituicao TipoInstituicao { get; set; }
 
-        //public ContatoDTO Contato { get; set; }
-        //public EnderecoDTO Endereco { get; set; }
-
-        //public List<AvaliacaoDTO> Avaliacoes { get; set; }
-        //public List<CaracteristicasEscolaDTO> CaracteristicasEscola { get; set; }
+        public ContatoDTO Contato { get; set; }
+        public EnderecoDTO Endereco { get; set; }
+        public List<AvaliacaoDTO> Avaliacoes { get; set; }
+        public List<CaracteristicasEscolaDTO> CaracteristicasEscola { get; set; }
     }
 }

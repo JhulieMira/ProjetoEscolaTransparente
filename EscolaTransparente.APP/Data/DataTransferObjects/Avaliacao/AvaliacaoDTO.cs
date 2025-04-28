@@ -1,7 +1,4 @@
-﻿using EscolaTransparente.Application.Data.DataTransferObjects.Caracteristica;
-using EscolaTransparente.Application.Data.DataTransferObjects.Escola;
-
-namespace EscolaTransparente.Application.Data.DataTransferObjects.Avaliacao
+﻿namespace EscolaTransparente.Application.Data.DataTransferObjects.Avaliacao
 {
     public class AvaliacaoDTO
     {
@@ -11,9 +8,5 @@ namespace EscolaTransparente.Application.Data.DataTransferObjects.Avaliacao
         public int CaracteristicaId { get; set; }
         public short Nota { get; set; }
         public DateTime Data { get; set; }
-
-        public EscolaDTO Escola { get; set; }
-        public CaracteristicaDTO Caracteristica { get; set; }
-        public RespostaAvaliacaoDTO RespostaAvaliacao { get; set; }
     }
 }

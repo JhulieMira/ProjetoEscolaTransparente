@@ -7,7 +7,7 @@
         public int EscolaId { get; set; }
         public short NotaMedia { get; set; }
 
-        public EscolaModel Escola { get; set; }
-        public CaracteristicaModel Caracteristica { get; set; }
+        public virtual EscolaModel Escola { get; set; }
+        public virtual CaracteristicaModel Caracteristica { get; set; }
     }
 }

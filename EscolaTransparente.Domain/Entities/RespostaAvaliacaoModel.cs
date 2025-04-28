@@ -7,6 +7,6 @@
         public string UsuarioId { get; set; }
         public string Resposta { get; set; }
 
-        public AvaliacaoModel Avaliacao { get; set; }
+        public virtual AvaliacaoModel Avaliacao { get; set; }
     }
 }

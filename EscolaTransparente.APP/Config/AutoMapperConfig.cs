@@ -12,10 +12,10 @@ namespace EscolaTransparente.Application.Config
     {
         public AutoMapperConfig()
         {
-            CreateMap<Domain.Entities.EscolaModel, Data.DataTransferObjects.Escola.EscolaDTO>().ReverseMap();
             CreateMap<ContatoModel, ContatoDTO>().ReverseMap();
             CreateMap<AvaliacaoModel, AvaliacaoDTO>().ReverseMap();
-            CreateMap<CaracteristicaModel, CaracteristicasEscolaDTO>().ReverseMap();
+            CreateMap<CaracteristicaModel, CaracteristicaDTO>().ReverseMap();
+            CreateMap<CaracteristicasEscolaModel, CaracteristicasEscolaDTO>().ReverseMap();
             CreateMap<EnderecoModel, EnderecoDTO>().ReverseMap();
             CreateMap<EscolaModel, EscolaDTO>().ReverseMap();
             CreateMap<RespostaAvaliacaoModel, RespostaAvaliacaoDTO>().ReverseMap(); 

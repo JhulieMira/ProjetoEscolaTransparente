@@ -15,9 +15,9 @@ namespace EscolaTransparente.Domain.Entities
         public DateTime CriadaEm { get; set; }
         public DateTime DataCadastro { get; set; }
 
-        public ContatoModel Contato { get; set; }
-        public EnderecoModel Endereco { get; set; }
-        public List<AvaliacaoModel> Avaliacoes { get; set; }
-        public List<CaracteristicasEscolaModel> CaracteristicasEscola { get; set; }
+        public virtual ContatoModel Contato { get; set; }
+        public virtual EnderecoModel Endereco { get; set; }
+        public virtual List<AvaliacaoModel> Avaliacoes { get; set; }
+        public virtual List<CaracteristicasEscolaModel> CaracteristicasEscola { get; set; }
     }
 }

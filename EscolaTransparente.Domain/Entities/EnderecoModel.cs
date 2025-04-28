@@ -11,6 +11,6 @@
         public string Latitude { get; set; }
         public string Longitude { get; set; }
 
-        public EscolaModel Escola { get; set; }
+        public virtual EscolaModel Escola { get; set; }
     }
 }
