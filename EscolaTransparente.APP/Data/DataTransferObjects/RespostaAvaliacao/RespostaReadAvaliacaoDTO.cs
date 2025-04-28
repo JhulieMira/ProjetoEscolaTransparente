@@ -1,6 +1,6 @@
 ﻿namespace EscolaTransparente.Application.Data.DataTransferObjects.RespostaAvaliacao
 {
-    public class RespostaAvaliacaoDTO
+    public class RespostaReadAvaliacaoDTO
     {
         public int RespostaId { get; set; }
         public int AvaliacaoId { get; set; }

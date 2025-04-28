@@ -22,7 +22,7 @@ namespace EscolaTransparente.Application.Config
             CreateMap<CaracteristicasEscolaModel, CaracteristicasEscolaReadDTO>().ReverseMap();
             CreateMap<EnderecoModel, EnderecoReadDTO>().ReverseMap();
             CreateMap<EscolaModel, EscolaReadDTO>().ReverseMap();
-            CreateMap<RespostaAvaliacaoModel, RespostaAvaliacaoDTO>().ReverseMap(); 
+            CreateMap<RespostaAvaliacaoModel, RespostaReadAvaliacaoDTO>().ReverseMap(); 
         }
     }
 }

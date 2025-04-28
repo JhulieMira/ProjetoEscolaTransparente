@@ -1,8 +1,7 @@
 ﻿namespace EscolaTransparente.Application.Data.DataTransferObjects.Contato
 {
-    public class ContatoReadDTO
+    public class ContatoInsertDTO
     {
-        public int ContatoId { get; set; }
         public int EscolaId { get; set; }
         public string Email { get; set; }
         public string UrlSite { get; set; }
