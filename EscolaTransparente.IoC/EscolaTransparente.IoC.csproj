@@ -11,4 +11,8 @@
     <ProjectReference Include="..\EscolaTransparente.Infraestructure\EscolaTransparente.Infraestructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Contracts\" />
+  </ItemGroup>
+
 </Project>
