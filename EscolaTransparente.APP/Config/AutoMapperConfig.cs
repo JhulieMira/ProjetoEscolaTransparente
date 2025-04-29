@@ -32,6 +32,7 @@ namespace EscolaTransparente.Application.Config
             CreateMap<CaracteristicasEscolaInsertDTO, CaracteristicasEscolaModel>()
                  .ForPath(dest => dest.Caracteristica.CaracteristicaId, opt => opt.MapFrom(src => src.CaracteristicaId))
                  .ForPath(dest => dest.Caracteristica.Descricao, opt => opt.MapFrom(src => src.Descricao));
+
             // Endereco mappings
             CreateMap<EnderecoModel, EnderecoReadDTO>();
             CreateMap<EnderecoInsertDTO, EnderecoModel>();
