@@ -1,5 +1,6 @@
 using FluentValidation;
 using EscolaTransparente.Domain.Entities;
+using EscolaTransparente.Infraestructure.Data.Enums;
 
 namespace EscolaTransparente.Domain.Validations
 {
@@ -16,9 +17,12 @@ namespace EscolaTransparente.Domain.Validations
                 .MaximumLength(1000).WithMessage("A descrição não pode ter mais que 1000 caracteres");
 
             RuleFor(x => x.CNPJ)
-                .NotEmpty().WithMessage("O CNPJ é obrigatório")
+                .NotEmpty().WithMessage("O CNPJ é obrigatório para escolas privadas")
+                    .When(x => x.TipoInstituicao == TipoInstituicao.Privada)
                 .Length(14).WithMessage("O CNPJ deve ter 14 dígitos")
-                .Matches(@"^\d+$").WithMessage("O CNPJ deve conter apenas números");
+                    .When(x => x.TipoInstituicao == TipoInstituicao.Privada)
+                .Matches(@"^\d+$").WithMessage("O CNPJ deve conter apenas números")
+                    .When(x => x.TipoInstituicao == TipoInstituicao.Privada);
 
             RuleFor(x => x.Contato)
                 .NotNull().WithMessage("As informações de contato são obrigatórias");
