@@ -1,7 +1,7 @@
-﻿using EscolaTransparente.Domain.Entities;
+using EscolaTransparente.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace EscolaTransparente.Domain.Interfaces.Repositories
+namespace EscolaTransparente.Contract.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
@@ -17,4 +17,4 @@ namespace EscolaTransparente.Domain.Interfaces.Repositories
         void Commit();
         Task CommitAsync();
     }
-}
+} 

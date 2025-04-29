@@ -1,31 +1,19 @@
 ﻿using EscolaTransparente.Domain.Entities;
-using EscolaTransparente.Domain.Interfaces.Repositories;
 using EscolaTransparente.Domain.Interfaces.Services;
 
 namespace EscolaTransparente.Domain.Services
 {
     public class EscolaService : IEscolaService
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IEscolaRepository _escolaRepository;
 
-        public EscolaService(IUnitOfWork unitOfWork, IEscolaRepository escolaRepository)
+        public EscolaService()
         {
-            _escolaRepository = escolaRepository;
-            _unitOfWork = unitOfWork;
         }
 
         public async Task<EscolaModel> AdicionarEscola(EscolaModel escola)
         {
-            await _escolaRepository.AddAsync(escola);
-            await _unitOfWork.CommitAsync();
-
+            //TO DO: Implementar lógica de validação da entidade
             return escola;
-        }
-
-        public async Task<EscolaModel?> ObterEscolaPorId(int escolaId)
-        {
-            return await _escolaRepository.GetByIdAsync(escolaId);
         }
     }
 }

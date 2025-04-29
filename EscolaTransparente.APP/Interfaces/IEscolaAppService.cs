@@ -1,6 +1,6 @@
 ﻿using EscolaTransparente.Application.Data.DataTransferObjects.Escola;
 
-namespace EscolaTransparente.Application.Interfaces.Services
+namespace EscolaTransparente.Application.Interfaces
 {
     public interface IEscolaAppService
     {

@@ -1,11 +1,11 @@
-﻿using EscolaTransparente.Domain.Interfaces.Repositories;
-using EscolaTransparente.Infraestructure.Context;
+﻿using EscolaTransparente.Infraestructure.Context;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using EscolaTransparente.Application.Config;
 using Microsoft.EntityFrameworkCore;
 using EscolaTransparente.Infraestructure.Data;
-using EscolaTransparente.Application.Interfaces.Services;
+using EscolaTransparente.Application.Interfaces;
+
 
 namespace EscolaTransparente.IoC.DependencyContainer
 {
@@ -16,8 +16,10 @@ namespace EscolaTransparente.IoC.DependencyContainer
             //Application
             services.AddScoped<IEscolaAppService, Application.Services.EscolaAppService>();
 
-            services.AddAutoMapper(typeof(AutoMapperConfig));
+            //Infrastructure
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddAutoMapper(typeof(AutoMapperConfig));
 
             services.AddDbContext<AppDbContext>(options =>
             {

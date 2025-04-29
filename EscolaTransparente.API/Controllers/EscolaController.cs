@@ -1,5 +1,5 @@
 ﻿using EscolaTransparente.Application.Data.DataTransferObjects.Escola;
-using EscolaTransparente.Application.Interfaces.Services;
+using EscolaTransparente.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EscolaTransparente.API.Controllers

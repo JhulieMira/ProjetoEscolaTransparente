@@ -1,5 +1,4 @@
 ﻿using EscolaTransparente.Domain.Entities;
-using EscolaTransparente.Domain.Interfaces.Repositories;
 using EscolaTransparente.Infraestructure.Context;
 using Microsoft.EntityFrameworkCore;
 

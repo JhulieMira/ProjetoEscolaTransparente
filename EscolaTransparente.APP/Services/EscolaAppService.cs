@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using EscolaTransparente.Application.Data.DataTransferObjects.Escola;
-using EscolaTransparente.Application.Interfaces.Services;
+using EscolaTransparente.Application.Interfaces;
 using EscolaTransparente.Domain.Entities;
-using EscolaTransparente.Domain.Interfaces.Repositories;
+using EscolaTransparente.Infraestructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace EscolaTransparente.Application.Services
