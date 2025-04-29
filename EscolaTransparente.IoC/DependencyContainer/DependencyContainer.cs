@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using EscolaTransparente.Infraestructure.Repository;
 using EscolaTransparente.Application.Config;
+using Microsoft.EntityFrameworkCore;
 
 namespace EscolaTransparente.IoC.DependencyContainer
 {
@@ -19,9 +20,11 @@ namespace EscolaTransparente.IoC.DependencyContainer
 
             services.AddAutoMapper(typeof(AutoMapperConfig));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IEscolaRepository, EscolaRepository>();
 
-            services.ConfigureSqlite(config);
+            services.AddDbContext<AppDbContext>(options =>
+            {
+                options.UseSqlite(config.GetConnectionString("DefaultConnection"));
+            });
         }   
     }
 }
