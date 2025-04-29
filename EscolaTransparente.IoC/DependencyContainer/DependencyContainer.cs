@@ -2,9 +2,9 @@
 using EscolaTransparente.Infraestructure.Context;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using EscolaTransparente.Infraestructure.Repository;
 using EscolaTransparente.Application.Config;
 using Microsoft.EntityFrameworkCore;
+using EscolaTransparente.Infraestructure.Data;
 
 namespace EscolaTransparente.IoC.DependencyContainer
 {

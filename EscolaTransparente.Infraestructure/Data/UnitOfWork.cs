@@ -2,7 +2,7 @@
 using EscolaTransparente.Infraestructure.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace EscolaTransparente.Infraestructure.Repository
+namespace EscolaTransparente.Infraestructure.Data
 {
     public class UnitOfWork : IUnitOfWork
     {
