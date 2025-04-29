@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EscolaTransparente.Domain\EscolaTransparente.Domain.csproj" />
+    <ProjectReference Include="..\EscolaTransparente.Domain\EscolaTransparente.DomainService.csproj" />
   </ItemGroup>
 
 </Project>

@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EscolaTransparente.API", "E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EscolaTransparente.Application", "EscolaTransparente.APP\EscolaTransparente.Application.csproj", "{AFD82EF8-6009-4372-ABB3-CC4B28126AB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EscolaTransparente.Domain", "EscolaTransparente.Domain\EscolaTransparente.Domain.csproj", "{9FD40881-A725-415A-8E83-56114F84AF0E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EscolaTransparente.DomainService", "EscolaTransparente.Domain\EscolaTransparente.DomainService.csproj", "{9FD40881-A725-415A-8E83-56114F84AF0E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EscolaTransparente.Infraestructure", "EscolaTransparente.Infraestructure\EscolaTransparente.Infraestructure.csproj", "{A844CFAF-0F95-4D4C-BD43-1895096143F1}"
 EndProject
