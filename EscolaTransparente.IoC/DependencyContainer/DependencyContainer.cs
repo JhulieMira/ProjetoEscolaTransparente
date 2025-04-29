@@ -5,7 +5,8 @@ using EscolaTransparente.Application.Config;
 using Microsoft.EntityFrameworkCore;
 using EscolaTransparente.Infraestructure.Data;
 using EscolaTransparente.Application.Interfaces;
-
+using EscolaTransparente.Domain.Interfaces.Services;
+using EscolaTransparente.Domain.Services;
 
 namespace EscolaTransparente.IoC.DependencyContainer
 {
@@ -15,6 +16,9 @@ namespace EscolaTransparente.IoC.DependencyContainer
         {
             //Application
             services.AddScoped<IEscolaAppService, Application.Services.EscolaAppService>();
+
+            //Domain
+            services.AddScoped<IEscolaService, EscolaService>();
 
             //Infrastructure
             services.AddScoped<IUnitOfWork, UnitOfWork>();

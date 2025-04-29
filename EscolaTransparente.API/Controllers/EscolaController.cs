@@ -30,7 +30,7 @@ namespace EscolaTransparente.API.Controllers
         }
 
         [HttpPost("")]
-        public async Task<ActionResult<EscolaInsertDTO>> Cadastrar([FromBody]EscolaInsertDTO escolaDTO)
+        public async Task<ActionResult<EscolaReadDTO>> Cadastrar([FromBody]EscolaInsertDTO escolaDTO)
         {
             try
             {

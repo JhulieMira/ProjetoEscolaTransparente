@@ -4,6 +4,6 @@ namespace EscolaTransparente.Domain.Interfaces.Services
 {
     public interface IEscolaService
     {
-        Task<EscolaModel> AdicionarEscola(EscolaModel escola);
+        Task<EscolaModel> ValidarEscola(EscolaModel escola);
     }
 }
