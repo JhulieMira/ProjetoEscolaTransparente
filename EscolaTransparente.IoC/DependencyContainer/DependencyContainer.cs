@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using EscolaTransparente.Application.Config;
 using Microsoft.EntityFrameworkCore;
 using EscolaTransparente.Infraestructure.Data;
+using EscolaTransparente.Application.Interfaces.Services;
 
 namespace EscolaTransparente.IoC.DependencyContainer
 {
@@ -13,10 +14,7 @@ namespace EscolaTransparente.IoC.DependencyContainer
         public static void RegisterServices(this IServiceCollection services, IConfiguration config)
         {
             //Application
-            services.AddScoped<Application.Interfaces.Services.IEscolaAppService, Application.Services.EscolaAppService>();
-
-            //Domain
-            services.AddScoped<Domain.Interfaces.Services.IEscolaService, Domain.Services.EscolaService>();
+            services.AddScoped<IEscolaAppService, Application.Services.EscolaAppService>();
 
             services.AddAutoMapper(typeof(AutoMapperConfig));
             services.AddScoped<IUnitOfWork, UnitOfWork>();

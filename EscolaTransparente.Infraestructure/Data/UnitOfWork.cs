@@ -1,4 +1,5 @@
-﻿using EscolaTransparente.Domain.Interfaces.Repositories;
+﻿using EscolaTransparente.Domain.Entities;
+using EscolaTransparente.Domain.Interfaces.Repositories;
 using EscolaTransparente.Infraestructure.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,26 +7,36 @@ namespace EscolaTransparente.Infraestructure.Data
 {
     public class UnitOfWork : IUnitOfWork
     {
-        public DbContext Context { get; }
+        private readonly AppDbContext _context;
 
-        public UnitOfWork(AppDbContext dbContext)
+        public DbContext Context => _context;
+
+        public DbSet<EscolaModel> Escolas => _context.Set<EscolaModel>();
+        public DbSet<AvaliacaoModel> Avaliacoes => _context.Set<AvaliacaoModel>();
+        public DbSet<CaracteristicaModel> Caracteristicas => _context.Set<CaracteristicaModel>();
+        public DbSet<CaracteristicasEscolaModel> CaracteristicasEscola => _context.Set<CaracteristicasEscolaModel>();
+        public DbSet<ContatoModel> Contatos => _context.Set<ContatoModel>();
+        public DbSet<EnderecoModel> Enderecos => _context.Set<EnderecoModel>();
+        public DbSet<RespostaAvaliacaoModel> RespostasAvaliacao => _context.Set<RespostaAvaliacaoModel>();
+
+        public UnitOfWork(AppDbContext context)
         {
-            Context = dbContext;
+            _context = context;
         }
 
         public void Commit()
         {
-            Context.SaveChanges();
+            _context.SaveChanges();
         }
 
         public async Task CommitAsync()
         {
-            await Context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }   
 
         public void Dispose()
         {
-            Context.Dispose();
+            _context.Dispose();
         }
     }
 }

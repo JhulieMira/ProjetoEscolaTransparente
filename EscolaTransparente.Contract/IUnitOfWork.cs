@@ -1,11 +1,10 @@
-﻿using EscolaTransparente.Domain.Entities;
+using EscolaTransparente.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace EscolaTransparente.Domain.Interfaces.Repositories
+namespace EscolaTransparente.Contract
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork
     {
-        DbContext Context { get; }
         DbSet<EscolaModel> Escolas { get; }
         DbSet<AvaliacaoModel> Avaliacoes { get; }
         DbSet<CaracteristicaModel> Caracteristicas { get; }
@@ -14,7 +13,6 @@ namespace EscolaTransparente.Domain.Interfaces.Repositories
         DbSet<EnderecoModel> Enderecos { get; }
         DbSet<RespostaAvaliacaoModel> RespostasAvaliacao { get; }
         
-        void Commit();
-        Task CommitAsync();
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
-}
+} 

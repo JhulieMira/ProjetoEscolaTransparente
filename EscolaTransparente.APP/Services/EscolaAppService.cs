@@ -1,34 +1,44 @@
 ﻿using AutoMapper;
 using EscolaTransparente.Application.Data.DataTransferObjects.Escola;
 using EscolaTransparente.Application.Interfaces.Services;
-using EscolaTransparente.Domain.Interfaces.Services;
+using EscolaTransparente.Domain.Entities;
+using EscolaTransparente.Domain.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace EscolaTransparente.Application.Services
 {
     public class EscolaAppService : IEscolaAppService
     {
         private readonly IMapper _mapper;
-        private readonly IEscolaService _escolaService;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public EscolaAppService(IMapper mapper, IEscolaService escolaService)
+        public EscolaAppService(IMapper mapper, IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
-            _escolaService = escolaService;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<EscolaReadDTO?> AdicionarEscola(EscolaInsertDTO escola)
         {
-            var escolaModel = _mapper.Map<Domain.Entities.EscolaModel>(escola);
-            var escolaResult = await _escolaService.AdicionarEscola(escolaModel);
-            return _mapper.Map<EscolaReadDTO>(escolaResult);
+            var escolaModel = _mapper.Map<EscolaModel>(escola);
+            await _unitOfWork.Escolas.AddAsync(escolaModel);
+            await _unitOfWork.CommitAsync();
+            return _mapper.Map<EscolaReadDTO>(escolaModel);
         }
 
         public async Task<EscolaReadDTO?> ObterEscolaPorId(int escolaId)
         {
-            var escola = await _escolaService.ObterEscolaPorId(escolaId);
-            if (escola is null) return null;
+            var escola = await _unitOfWork.Escolas
+                .Include(e => e.Contato)
+                .Include(e => e.Endereco)
+                .Include(e => e.CaracteristicasEscola)
+                    .ThenInclude(ce => ce.Caracteristica)
+                .FirstOrDefaultAsync(e => e.EscolaId == escolaId);
 
-            return _mapper.Map<EscolaReadDTO>(escola);  
+            if (escola is null) 
+                return null;
+
+            return _mapper.Map<EscolaReadDTO>(escola);
         }
     }
 }
