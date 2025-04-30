@@ -1,5 +1,6 @@
 ﻿using EscolaTransparente.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace EscolaTransparente.Infraestructure.Data
 {
@@ -16,5 +17,11 @@ namespace EscolaTransparente.Infraestructure.Data
 
         void Commit();
         Task CommitAsync();
+        Task<IDbContextTransaction> BeginTransactionAsync();
+        IDbContextTransaction BeginTransaction();
+        Task CommitAsync(IDbContextTransaction transaction);
+        void Commit(IDbContextTransaction transaction);
+        Task RollbackAsync(IDbContextTransaction transaction);
+        void Rollback(IDbContextTransaction transaction);
     }
 }

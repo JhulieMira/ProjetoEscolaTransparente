@@ -22,8 +22,23 @@ namespace EscolaTransparente.Application.Config
             
             // Avaliacao mappings
             CreateMap<AvaliacaoModel, AvaliacaoReadDTO>();
-            CreateMap<AvaliacaoInsertDTO, AvaliacaoModel>();
-            
+            CreateMap<AvaliacaoInsertDTO, AvaliacaoModel>()
+                    .ForMember(dest => dest.AvaliacaoId, opt => opt.Ignore())
+                    .ForMember(dest => dest.Escola, opt => opt.Ignore()) 
+                    .ForMember(dest => dest.Caracteristica, opt => opt.MapFrom((src, dest) =>
+                    {
+                        if (src.CaracteristicaId.HasValue)
+                        {
+                            return new CaracteristicaModel { CaracteristicaId = src.CaracteristicaId.Value };
+                        }
+                        else if (!string.IsNullOrEmpty(src.DescricaoCaracteristica))
+                        {
+                            return new CaracteristicaModel { Descricao = src.DescricaoCaracteristica };
+                        }
+                        return null;
+                    }))
+                    .ForMember(dest => dest.RespostaAvaliacao, opt => opt.Ignore());
+
             // Caracteristica mappings
             CreateMap<CaracteristicaInsertDTO, CaracteristicaModel>();
             CreateMap<CaracteristicasEscolaModel, CaracteristicasEscolaReadDTO>()
