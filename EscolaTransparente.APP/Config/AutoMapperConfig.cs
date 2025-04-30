@@ -35,14 +35,31 @@ namespace EscolaTransparente.Application.Config
             // Endereco mappings
             CreateMap<EnderecoModel, EnderecoReadDTO>();
             CreateMap<EnderecoInsertDTO, EnderecoModel>();
-            
+
             // Escola mappings
             CreateMap<EscolaModel, EscolaReadDTO>();
             CreateMap<EscolaInsertDTO, EscolaModel>();
-            
+            CreateMap<EscolaUpdateDTO, EscolaModel>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) =>
+                    srcMember != null && !srcMember.Equals(GetDefaultValue(srcMember.GetType()))));
+
+            CreateMap<EscolaUpdateDTO, EscolaModel>()
+                .ForMember(dest => dest.EscolaId, opt => opt.Ignore())
+                .ForMember(dest => dest.NotaMedia, opt => opt.Ignore())
+                .ForMember(dest => dest.Verificada, opt => opt.Ignore())
+                .ForMember(dest => dest.CriadaEm, opt => opt.Ignore())
+                .ForMember(dest => dest.Contato, opt => opt.Ignore())
+                .ForMember(dest => dest.Endereco, opt => opt.Ignore())
+                .ForMember(dest => dest.Avaliacoes, opt => opt.Ignore());
+
+
             // RespostaAvaliacao mappings
             CreateMap<RespostaAvaliacaoModel, RespostaReadAvaliacaoDTO>();
             CreateMap<RespostaAvaliacaoInsertDTO, RespostaAvaliacaoModel>();
+        }
+        private object GetDefaultValue(Type type)
+        {
+            return type.IsValueType ? Activator.CreateInstance(type) : null;
         }
     }
 }

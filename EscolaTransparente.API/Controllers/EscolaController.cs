@@ -42,5 +42,35 @@ namespace EscolaTransparente.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPut("{escolaId:int}")]
+        public async Task<ActionResult<EscolaReadDTO>> Atualizar([FromRoute]int escolaId, [FromBody]EscolaUpdateDTO escolaDTO)
+        {
+            try
+            {
+                var result = await _escolaService.AtualizarEscola(escolaId, escolaDTO);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("{escolaId:int}")]
+        public async Task<ActionResult> Deletar([FromRoute]int escolaId)
+        {
+            try
+            {
+                var result = await _escolaService.DeletarEscola(escolaId);
+                if (result)
+                    return NoContent();
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
