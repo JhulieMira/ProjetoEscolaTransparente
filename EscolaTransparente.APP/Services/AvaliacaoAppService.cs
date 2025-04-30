@@ -113,6 +113,8 @@ namespace EscolaTransparente.Application.Services
                 await ValidarListaAvaliacoesDTO(avaliacoesDTO);
                 var avaliacoesModel = await ProcessarERetornarListaAvaliacoesModel(avaliacoesDTO);
 
+                await _avaliacaoService.ValidarListaAvaliacoes(avaliacoesModel);
+
                 await _unitOfWork.CommitAsync(transaction);
                 return _mapper.Map<List<AvaliacaoReadDTO>>(avaliacoesModel);
             }
@@ -147,14 +149,6 @@ namespace EscolaTransparente.Application.Services
                 _unitOfWork.Caracteristicas.Add(model.Caracteristica);
         }
 
-        private async Task<List<AvaliacaoModel>> PersistirERetornarListaAvaliacoesCriada(List<AvaliacaoModel> avaliacoesModel)
-        {
-            await _unitOfWork.Avaliacoes.AddRangeAsync(avaliacoesModel);
-            await _unitOfWork.CommitAsync();
-
-            return avaliacoesModel;
-        }
-
         private async Task ValidarListaAvaliacoesDTO(List<AvaliacaoInsertDTO> avaliacoesDTO)
         {
             if (avaliacoesDTO == null || !avaliacoesDTO.Any())
@@ -172,8 +166,8 @@ namespace EscolaTransparente.Application.Services
             {
                 if (dto.CaracteristicaId.HasValue && string.IsNullOrEmpty(dto.DescricaoCaracteristica))
                 {
-                    var exists = await _unitOfWork.Caracteristicas.ExistsAsync(dto.CaracteristicaId.Value);
-                    if (!exists)
+                    var caracteristicaExistente = await _unitOfWork.Caracteristicas.FindAsync(dto.CaracteristicaId);
+                    if (caracteristicaExistente is null)
                         throw new ValidationException($"Característica {dto.CaracteristicaId} não encontrada");
                 }
                 else if (!dto.CaracteristicaId.HasValue && string.IsNullOrEmpty(dto.DescricaoCaracteristica))

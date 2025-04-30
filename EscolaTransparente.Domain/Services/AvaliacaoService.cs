@@ -26,5 +26,13 @@ namespace EscolaTransparente.Domain.Services
 
             return avaliacao;
         }
+
+        public async Task ValidarListaAvaliacoes(List<AvaliacaoModel> avaliacoes)
+        {
+            List<AvaliacaoModel> avaliacoesValidas = new List<AvaliacaoModel>();
+
+            foreach (var avaliacao in avaliacoes)
+                await ValidarAvaliacao(avaliacao);
+        }
     }
 } 
