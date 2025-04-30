@@ -21,6 +21,8 @@ namespace EscolaTransparente.API.Controllers
             {
                 var result = await _escolaService.ObterEscolaPorId(escolaId);
 
+                if (result is null) return NotFound();
+
                 return Ok(result);
             }
             catch (Exception ex)
@@ -49,7 +51,7 @@ namespace EscolaTransparente.API.Controllers
             try
             {
                 var result = await _escolaService.AtualizarEscola(escolaId, escolaDTO);
-                return Ok(result);
+                    return Ok(result);
             }
             catch (Exception ex)
             {
