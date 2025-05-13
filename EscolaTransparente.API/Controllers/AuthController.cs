@@ -164,7 +164,7 @@ namespace EscolaTransparente.API.Controllers
 
             return IdentityResult.Success;
         }
-}
+
 
         private string GenerateJwtToken(IdentityUser user)
         {
