@@ -10,7 +10,7 @@ using EscolaTransparente.Domain.Entities;
 namespace EscolaTransparente.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly UserManager<Usuario> _userManager;
@@ -76,6 +76,8 @@ namespace EscolaTransparente.API.Controllers
 
         private string GenerateJwtToken(IdentityUser user)
         {
+            var jwtSettings = _configuration.GetSection("JwtSettings");
+
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Email),
@@ -83,14 +85,14 @@ namespace EscolaTransparente.API.Controllers
                 new Claim(ClaimTypes.NameIdentifier, user.Id)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("sua-chave-super-secreta"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                issuer: "SeuSistema",
-                audience: "SeuSistema",
+                issuer: jwtSettings["Issuer"],
+                audience: jwtSettings["Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddHours(3),
+                expires: DateTime.Now.AddHours(double.Parse(jwtSettings["ExpiresInHours"])),
                 signingCredentials: creds
             );
 
