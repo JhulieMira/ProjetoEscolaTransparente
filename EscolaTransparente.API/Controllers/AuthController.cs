@@ -15,15 +15,18 @@ namespace EscolaTransparente.API.Controllers
     {
         private readonly UserManager<Usuario> _userManager;
         private readonly SignInManager<Usuario> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
 
         public AuthController(
             UserManager<Usuario> userManager,
             SignInManager<Usuario> signInManager,
+            RoleManager<IdentityRole> roleManager,
             IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
             _configuration = configuration;
         }
 
@@ -73,6 +76,95 @@ namespace EscolaTransparente.API.Controllers
 
             return Unauthorized(new { message = "Senha inválida" });
         }
+
+        [HttpPost("roles")]
+        public async Task<IActionResult> CreateRole([FromBody] CreateRoleModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var roleExists = await _roleManager.RoleExistsAsync(model.Name);
+            if (roleExists)
+                return BadRequest(new { message = "Role já existe" });
+
+            var result = await _roleManager.CreateAsync(new IdentityRole(model.Name));
+
+            if (result.Succeeded)
+                return Ok(new { message = "Role criada com sucesso" });
+
+            return BadRequest(result.Errors);
+        }
+
+        [HttpPost("addUserClaim")]
+        public async Task<IActionResult> AddClaimToUser(string userId, string claimType, string claimValue)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return NotFound();
+
+            var claim = new Claim(claimType, claimValue);
+            var result = await _userManager.AddClaimAsync(user, claim);
+
+            if (result.Succeeded)
+                return Ok($"Claim '{claimType}:{claimValue}' adicionada!");
+
+            return BadRequest(result.Errors);
+        }
+
+        [HttpPost("addClaimToRole")]
+        public async Task<IActionResult> AddClaimToRole(string roleName, string claimType, string claimValue)
+        {
+            var role = await _roleManager.FindByNameAsync(roleName);
+            if (role == null) return NotFound();
+
+            var claim = new Claim(claimType, claimValue);
+            var result = await _roleManager.AddClaimAsync(role, claim);
+
+            if (result.Succeeded)
+                return Ok($"Claim '{claimType}:{claimValue}' adicionada à role '{roleName}'!");
+
+            return BadRequest(result.Errors);
+        }
+
+        [HttpPost("updateUserRoleAndClaims")]
+        public async Task<IdentityResult> UpdateUserRoleAndClaimsAsync(
+        string userId,
+        string? newRole = null,
+        List<Claim>? claims = null,
+        bool removeCurrentRoles = false)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return IdentityResult.Failed(new IdentityError { Description = "Usuário não encontrado." });
+
+            // 1. Remove roles atuais (se solicitado)
+            if (removeCurrentRoles)
+            {
+                var currentRoles = await _userManager.GetRolesAsync(user);
+                await _userManager.RemoveFromRolesAsync(user, currentRoles);
+            }
+
+            // 2. Adiciona a nova role (se fornecida)
+            if (!string.IsNullOrEmpty(newRole))
+            {
+                // Verifica se a role existe
+                if (!await _roleManager.RoleExistsAsync(newRole))
+                    await _roleManager.CreateAsync(new IdentityRole(newRole));
+
+                await _userManager.AddToRoleAsync(user, newRole);
+            }
+
+            // 3. Adiciona claims (se fornecidas)
+            if (claims != null && claims.Any())
+            {
+                foreach (var claim in claims)
+                {
+                    await _userManager.AddClaimAsync(user, claim);
+                }
+            }
+
+            return IdentityResult.Success;
+        }
+}
 
         private string GenerateJwtToken(IdentityUser user)
         {
@@ -132,5 +224,11 @@ namespace EscolaTransparente.API.Controllers
 
         [Required]
         public string Password { get; set; }
+    }
+
+    public class CreateRoleModel
+    {
+        [Required]
+        public string Name { get; set; }
     }
 } 
