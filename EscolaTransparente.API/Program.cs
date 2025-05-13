@@ -1,8 +1,11 @@
+using System.Text;
 using EscolaTransparente.Domain.Entities;
 using EscolaTransparente.Infraestructure.Context;
 using EscolaTransparente.IoC.DependencyContainer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,20 +16,30 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAuthorization();
-builder.Services.AddAuthentication("Bearer")
-    .AddJwtBearer("Bearer", options =>
-    {   
-        options.Authority = "https://localhost:5001/";
-        options.RequireHttpsMetadata = false;
-        options.Audience = "api1";
-    });
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+ .AddEntityFrameworkStores<AppDbContext>()
+ .AddDefaultTokenProviders();
 
-builder.Services.AddIdentityCore<Usuario>()
-                .AddEntityFrameworkStores<AppDbContext>()
-                .AddApiEndpoints();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = "SeuSistema",
+        ValidAudience = "SeuSistema",
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("sua-chave-super-secreta"))
+    };
+});
 
-builder.Services.RegisterServices(builder.Configuration);   
+builder.Services.RegisterServices(builder.Configuration);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -37,12 +50,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-}       
+}
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseHttpsRedirection();
 
 app.MapControllers();
-
-app.MapIdentityApi<Usuario>();
 
 app.Run();

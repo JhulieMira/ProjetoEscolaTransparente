@@ -4,9 +4,9 @@ namespace EscolaTransparente.Application.Interfaces
 {
     public interface IEscolaAppService
     {
-        Task<EscolaReadDTO?> ObterEscolaPorId(int escolaId);
-        Task<EscolaReadDTO> AdicionarEscola(EscolaInsertDTO escola);
-        Task<EscolaReadDTO> AtualizarEscola(int escolaId, EscolaUpdateDTO escola);
+        Task<EscolaDetalhadaReadDTO?> ObterEscolaPorId(int escolaId);
+        Task<EscolaDetalhadaReadDTO> AdicionarEscola(EscolaInsertDTO escola);
+        Task<EscolaDetalhadaReadDTO> AtualizarEscola(int escolaId, EscolaUpdateDTO escola);
         Task<bool> DeletarEscola(int escolaId);
     }
 }

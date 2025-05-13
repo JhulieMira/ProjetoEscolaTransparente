@@ -52,7 +52,7 @@ namespace EscolaTransparente.Application.Config
             CreateMap<EnderecoInsertDTO, EnderecoModel>();
 
             // Escola mappings
-            CreateMap<EscolaModel, EscolaReadDTO>();
+            CreateMap<EscolaModel, EscolaDetalhadaReadDTO>();
             CreateMap<EscolaInsertDTO, EscolaModel>();
             CreateMap<EscolaUpdateDTO, EscolaModel>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) =>

@@ -22,7 +22,7 @@ namespace EscolaTransparente.Application.Services
             _escolaService = escolaService;
         }
 
-        public async Task<EscolaReadDTO?> AdicionarEscola(EscolaInsertDTO escola)
+        public async Task<EscolaDetalhadaReadDTO?> AdicionarEscola(EscolaInsertDTO escola)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace EscolaTransparente.Application.Services
 
                 escolaModel = await PersistirERetornarEscolaCriada(escolaModel);
 
-                return _mapper.Map<EscolaReadDTO>(escolaModel);
+                return _mapper.Map<EscolaDetalhadaReadDTO>(escolaModel);
             }
             catch (ValidationException ex)
             {
@@ -42,7 +42,7 @@ namespace EscolaTransparente.Application.Services
             }
         }
 
-        public async Task<EscolaReadDTO?> ObterEscolaPorId(int escolaId)
+        public async Task<EscolaDetalhadaReadDTO?> ObterEscolaPorId(int escolaId)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace EscolaTransparente.Application.Services
                 if (escola is null)
                     return null;
 
-                return _mapper.Map<EscolaReadDTO>(escola);
+                return _mapper.Map<EscolaDetalhadaReadDTO>(escola);
             }
             catch (Exception ex)
             {
@@ -64,7 +64,7 @@ namespace EscolaTransparente.Application.Services
             }
         }
 
-        public async Task<EscolaReadDTO> AtualizarEscola(int escolaId, EscolaUpdateDTO escolaDTO)
+        public async Task<EscolaDetalhadaReadDTO> AtualizarEscola(int escolaId, EscolaUpdateDTO escolaDTO)
         {
             try
             {
@@ -77,7 +77,7 @@ namespace EscolaTransparente.Application.Services
 
                 await _unitOfWork.CommitAsync();
 
-                return _mapper.Map<EscolaReadDTO>(escolaAtualizada);
+                return _mapper.Map<EscolaDetalhadaReadDTO>(escolaAtualizada);
             }
             catch (ValidationException ex)
             {

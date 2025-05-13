@@ -15,7 +15,7 @@ namespace EscolaTransparente.API.Controllers
         }
 
         [HttpGet("{escolaId:int}")]
-        public async Task<ActionResult<EscolaReadDTO>> ObterPorId([FromRoute]int escolaId)
+        public async Task<ActionResult<EscolaDetalhadaReadDTO>> ObterPorId([FromRoute]int escolaId)
         {
             try
             {
@@ -32,7 +32,7 @@ namespace EscolaTransparente.API.Controllers
         }
 
         [HttpPost("")]
-        public async Task<ActionResult<EscolaReadDTO>> Cadastrar([FromBody]EscolaInsertDTO escolaDTO)
+        public async Task<ActionResult<EscolaDetalhadaReadDTO>> Cadastrar([FromBody]EscolaInsertDTO escolaDTO)
         {
             try
             {
@@ -46,7 +46,7 @@ namespace EscolaTransparente.API.Controllers
         }
 
         [HttpPut("{escolaId:int}")]
-        public async Task<ActionResult<EscolaReadDTO>> Atualizar([FromRoute]int escolaId, [FromBody]EscolaUpdateDTO escolaDTO)
+        public async Task<ActionResult<EscolaDetalhadaReadDTO>> Atualizar([FromRoute]int escolaId, [FromBody]EscolaUpdateDTO escolaDTO)
         {
             try
             {
