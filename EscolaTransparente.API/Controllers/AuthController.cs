@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations;
+using EscolaTransparente.Domain.Entities;
 
 namespace EscolaTransparente.API.Controllers
 {
@@ -12,13 +13,13 @@ namespace EscolaTransparente.API.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<Usuario> _userManager;
+        private readonly SignInManager<Usuario> _signInManager;
         private readonly IConfiguration _configuration;
 
         public AuthController(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<Usuario> userManager,
+            SignInManager<Usuario> signInManager,
             IConfiguration configuration)
         {
             _userManager = userManager;
@@ -32,10 +33,14 @@ namespace EscolaTransparente.API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var user = new IdentityUser
+            var user = new Usuario
             {
                 UserName = model.Email,
-                Email = model.Email
+                Email = model.Email,
+                Nome = model.Nome,
+                Sobrenome = model.Sobrenome,
+                CPF = model.CPF,
+                DataNascimento = model.DataNascimento
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -101,10 +106,20 @@ namespace EscolaTransparente.API.Controllers
 
         [Required]
         [StringLength(100, MinimumLength = 6)]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Compare("Password")]
-        public string ConfirmPassword { get; set; }
+        [Required]
+        public string Nome { get; set; }
+
+        [Required]
+        public string Sobrenome { get; set; }
+
+        [Required]
+        public string CPF { get; set; }
+
+        [Required]
+        public DateTime DataNascimento { get; set; }
     }
 
     public class LoginModel
