@@ -42,6 +42,36 @@ namespace EscolaTransparente.Application.Services
             }
         }
 
+        public async Task<List<EscolaDetalhadaReadDTO>> ObterTop10EscolasAsync()
+        {
+            try
+            {
+                var escolas = await _unitOfWork.Escolas
+                    .Include(e => e.Contato)
+                    .Include(e => e.Endereco)
+                    .Include(e => e.CaracteristicasEscola)
+                        .ThenInclude(ce => ce.Caracteristica)
+                    .Include(e => e.Avaliacoes)
+                    .OrderByDescending(e => e.Avaliacoes.Any() ? e.Avaliacoes.Average(a => a.Nota) : 0)
+                    .Take(10)
+                    .ToListAsync();
+
+                var escolasDTO = escolas.Select(e =>
+                {
+                    var dto = _mapper.Map<EscolaDetalhadaReadDTO>(e);
+                    dto.NotaMedia = (short)(e.Avaliacoes.Any() ? e.Avaliacoes.Average(a => a.Nota) : 0);
+                    return dto;
+                }).ToList();
+
+                return escolasDTO;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao obter top 10 escolas: " + ex.Message);
+            }
+        }
+
+
         public async Task<EscolaDetalhadaReadDTO?> ObterEscolaPorId(int escolaId)
         {
             try

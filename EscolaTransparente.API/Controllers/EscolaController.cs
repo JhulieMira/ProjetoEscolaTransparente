@@ -31,10 +31,27 @@ namespace EscolaTransparente.API.Controllers
             }
         }
 
+        [HttpGet("GetTop10")]
+        public async Task<ActionResult<EscolaDetalhadaReadDTO>> ObterTop10Escolas()
+        {
+            try
+            {
+                var result = await _escolaService.ObterTop10EscolasAsync();
+
+                if (result is null) return NotFound();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost("")]
         public async Task<ActionResult<EscolaDetalhadaReadDTO>> Cadastrar([FromBody]EscolaInsertDTO escolaDTO)
         {
-            try
+            try     
             {
                 var result = await _escolaService.AdicionarEscola(escolaDTO);
                 return Ok(result);
