@@ -1,4 +1,5 @@
-﻿using EscolaTransparente.API.Attributes;
+﻿using System.Data;
+using EscolaTransparente.API.Attributes;
 using EscolaTransparente.Application.Data.DataTransferObjects.Escola;
 using EscolaTransparente.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -18,7 +19,6 @@ namespace EscolaTransparente.API.Controllers
         }
 
         [HttpGet("{escolaId:int}")]
-        [AuthorizeRolesAndClaims(roles: new[] { "admin" })]
         public async Task<ActionResult<EscolaDetalhadaReadDTO>> ObterPorId([FromRoute]int escolaId)
         {
             try
@@ -35,6 +35,7 @@ namespace EscolaTransparente.API.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet("GetTop10")]
         public async Task<ActionResult<EscolaDetalhadaReadDTO>> ObterTop10Escolas()
         {
@@ -67,6 +68,9 @@ namespace EscolaTransparente.API.Controllers
         }
 
         [HttpPut("{escolaId:int}")]
+        [AuthorizeRolesAndClaims(
+            roles: new[] { "gestor_escolar" }
+        )]
         public async Task<ActionResult<EscolaDetalhadaReadDTO>> Atualizar([FromRoute]int escolaId, [FromBody]EscolaUpdateDTO escolaDTO)
         {
             try

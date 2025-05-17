@@ -14,6 +14,14 @@ namespace EscolaTransparente.Domain.Services
             _validator = new EscolaValidation();
         }
 
+        public async Task<bool> ValidarSeUsuarioPodeAlterarDadosEscola(string escolaIdUsuario, int escolaId)
+        {
+            if(String.IsNullOrEmpty(escolaIdUsuario))
+                throw new Exception("O usuário está cadastrado como um gestor escolar, mas não possui nenhuma escola associada ao seu perfil.");
+
+            return int.Parse(escolaIdUsuario) == escolaId;
+        }
+
         public async Task<EscolaModel> ValidarEscola(EscolaModel escola)
         {
             var validationResult = await _validator.ValidateAsync(escola);

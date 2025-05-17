@@ -7,6 +7,7 @@ using EscolaTransparente.Infraestructure.Data;
 using EscolaTransparente.Application.Interfaces;
 using EscolaTransparente.Domain.Interfaces.Services;
 using EscolaTransparente.Domain.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace EscolaTransparente.IoC.DependencyContainer
 {
@@ -17,6 +18,7 @@ namespace EscolaTransparente.IoC.DependencyContainer
             //Application
             services.AddScoped<IEscolaAppService, Application.Services.EscolaAppService>();
             services.AddScoped<IAvaliacaoAppService, Application.Services.AvaliacaoAppService>();
+            services.AddHttpContextAccessor();
 
             //Domain
             services.AddScoped<IAvaliacaoService, AvaliacaoService>();

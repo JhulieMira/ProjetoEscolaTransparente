@@ -6,6 +6,8 @@ using EscolaTransparente.Domain.Interfaces.Services;
 using EscolaTransparente.Infraestructure.Data;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
 
 namespace EscolaTransparente.Application.Services
 {
@@ -14,12 +16,14 @@ namespace EscolaTransparente.Application.Services
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEscolaService _escolaService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public EscolaAppService(IMapper mapper, IUnitOfWork unitOfWork, IEscolaService escolaService)
+        public EscolaAppService(IMapper mapper, IUnitOfWork unitOfWork, IEscolaService escolaService, IHttpContextAccessor httpContextAccessor)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _escolaService = escolaService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<EscolaDetalhadaReadDTO?> AdicionarEscola(EscolaInsertDTO escola)
@@ -99,6 +103,8 @@ namespace EscolaTransparente.Application.Services
         {
             try
             {
+                await ValidarPermissaoUsuario(escolaId);
+
                 var escolaExistente = await ObterEscolaModelPorId(escolaId);
 
                 if (escolaExistente is null)
@@ -167,6 +173,25 @@ namespace EscolaTransparente.Application.Services
             _mapper.Map(escolaDTO, escolaExistente);
 
             return await _escolaService.ValidarEscola(escolaExistente);
+        }
+        private async Task ValidarPermissaoUsuario(int escolaId)
+        {
+            var escolaIdUsuarioAutenticado = GetUserClaim("escolaId");
+
+            var usuarioPossuiPermissao = await _escolaService.ValidarSeUsuarioPodeAlterarDadosEscola(escolaIdUsuarioAutenticado, escolaId);
+
+            if (!usuarioPossuiPermissao)
+                throw new Exception("Usuário não possui permissão para alterar os dados da escola.");
+        }
+
+        private string GetUserClaim(string claimType)
+        {
+            var user = _httpContextAccessor.HttpContext?.User;
+            if (user == null)
+                return null;
+
+            var claim = user.Claims.FirstOrDefault(c => c.Type == claimType);
+            return claim?.Value;
         }
     }
 }
