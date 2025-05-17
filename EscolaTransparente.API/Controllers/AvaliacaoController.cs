@@ -1,4 +1,5 @@
 ﻿using EscolaTransparente.Application.Data.DataTransferObjects.Avaliacao;
+using EscolaTransparente.Application.Data.DataTransferObjects.Caracteristica;
 using EscolaTransparente.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -88,6 +89,48 @@ namespace EscolaTransparente.API.Controllers
                 if (result)
                     return NoContent();
                 return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("ObterCaracteristicasPorEscolaId/{escolaId:int}")]
+        public async Task<ActionResult<List<CaracteristicaReadDTO>>> ObterCaracteristicasPorEscolaId([FromRoute] int escolaId)
+        {
+            try
+            {
+                var result = await _avaliacaoService.ObterCaracteristicasEscolaPorEscolaId(escolaId);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("Caracteristica")]
+        public async Task<ActionResult<CaracteristicaReadDTO>> AdicionarCaracteristica([FromBody] CaracteristicaInsertDTO caracteristica)
+        {
+            try
+            {
+                var result = await _avaliacaoService.AdicionarCaracteristica(caracteristica);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("CaracteristicaEscola")]
+        public async Task<ActionResult<CaracteristicaReadDTO>> AdicionarCaracteristicaEscola([FromBody] CaracteristicaEscolaInsertDTO caracteristicaEscola)
+        {
+            try
+            {
+                var result = await _avaliacaoService.AdicionarCaracteristicaEscola(caracteristicaEscola);
+                return Ok(result);
             }
             catch (Exception ex)
             {

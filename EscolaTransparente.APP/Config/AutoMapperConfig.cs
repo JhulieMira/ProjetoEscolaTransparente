@@ -41,6 +41,7 @@ namespace EscolaTransparente.Application.Config
 
             // Caracteristica mappings
             CreateMap<CaracteristicaInsertDTO, CaracteristicaModel>();
+            CreateMap<CaracteristicaModel, CaracteristicaReadDTO>();
             CreateMap<CaracteristicasEscolaModel, CaracteristicasEscolaReadDTO>()
                 .ForMember(dest => dest.Descricao, opt => opt.MapFrom(src => src.Caracteristica.Descricao));
 

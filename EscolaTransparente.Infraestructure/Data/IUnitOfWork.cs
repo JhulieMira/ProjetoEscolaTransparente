@@ -10,10 +10,11 @@ namespace EscolaTransparente.Infraestructure.Data
         public DbSet<EscolaModel> Escolas { get; }
         public DbSet<AvaliacaoModel> Avaliacoes { get; }
         public DbSet<CaracteristicaModel> Caracteristicas { get; }
-        public DbSet<CaracteristicasEscolaModel> CaracteristicasEscola { get; }
+        public DbSet<CaracteristicasEscolaModel> CaracteristicasEscolas { get; }
         public DbSet<ContatoModel> Contatos { get; }
         public DbSet<EnderecoModel> Enderecos { get; }
         public DbSet<RespostaAvaliacaoModel> RespostasAvaliacao { get; }
+        public DbSet<Usuario> Usuario { get; }
 
         void Commit();
         Task CommitAsync();

@@ -16,8 +16,10 @@ namespace EscolaTransparente.IoC.DependencyContainer
         {
             //Application
             services.AddScoped<IEscolaAppService, Application.Services.EscolaAppService>();
+            services.AddScoped<IAvaliacaoAppService, Application.Services.AvaliacaoAppService>();
 
             //Domain
+            services.AddScoped<IAvaliacaoService, AvaliacaoService>();
             services.AddScoped<IEscolaService, EscolaService>();
 
             //Infrastructure

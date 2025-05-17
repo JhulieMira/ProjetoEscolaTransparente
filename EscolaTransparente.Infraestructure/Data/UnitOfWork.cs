@@ -20,6 +20,10 @@ namespace EscolaTransparente.Infraestructure.Data
         public DbSet<EnderecoModel> Enderecos => _context.Set<EnderecoModel>();
         public DbSet<RespostaAvaliacaoModel> RespostasAvaliacao => _context.Set<RespostaAvaliacaoModel>();
 
+        public DbSet<CaracteristicasEscolaModel> CaracteristicasEscolas => _context.Set<CaracteristicasEscolaModel>();
+
+        public DbSet<Usuario> Usuario => _context.Set<Usuario>();
+
         public UnitOfWork(AppDbContext context)
         {
             _context = context;

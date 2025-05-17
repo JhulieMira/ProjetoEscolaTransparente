@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EscolaTransparente.Application.Data.DataTransferObjects.Avaliacao;
+using EscolaTransparente.Application.Data.DataTransferObjects.Caracteristica;
 using EscolaTransparente.Application.Interfaces;
 using EscolaTransparente.Domain.Entities;
 using EscolaTransparente.Domain.Interfaces.Services;
@@ -147,6 +148,27 @@ namespace EscolaTransparente.Application.Services
             }
         }
 
+        public async Task<List<CaracteristicaReadDTO>> ObterCaracteristicasEscolaPorEscolaId(int escolaId)
+        {
+            try
+            {
+                var caracteristicas = await _unitOfWork.CaracteristicasEscolas
+                    .Include(ce => ce.Caracteristica)
+                    .Where(ce => ce.EscolaId == escolaId)
+                    .Select(ce => ce.Caracteristica)
+                    .ToListAsync();
+
+                if (caracteristicas is null || !caracteristicas.Any())
+                    return new List<CaracteristicaReadDTO>();
+
+                return _mapper.Map<List<CaracteristicaReadDTO>>(caracteristicas);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao obter características da escola: " + ex.Message);
+            }
+        }
+
         private async Task<List<AvaliacaoModel>> ProcessarERetornarListaAvaliacoesModel(List<AvaliacaoInsertDTO> avaliacoesDTO)
         {
             List<AvaliacaoModel> avaliacoesModel = new List<AvaliacaoModel>();
@@ -225,6 +247,72 @@ namespace EscolaTransparente.Application.Services
         {
             _mapper.Map(avaliacaoDTO, avaliacaoExistente);
             return await _avaliacaoService.ValidarAvaliacao(avaliacaoExistente);
+        }
+
+        public async Task<CaracteristicaReadDTO> AdicionarCaracteristica(CaracteristicaInsertDTO caracteristicaDTO)
+        {
+            try
+            {
+                var caracteristica = _mapper.Map<CaracteristicaModel>(caracteristicaDTO);
+                
+                await _unitOfWork.Caracteristicas.AddAsync(caracteristica);
+                await _unitOfWork.CommitAsync();
+
+                return _mapper.Map<CaracteristicaReadDTO>(caracteristica);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao adicionar característica: " + ex.Message);
+            }
+        }
+
+        public async Task<CaracteristicaReadDTO> AdicionarCaracteristicaEscola(CaracteristicaEscolaInsertDTO caracteristicaEscolaDTO)
+        {
+            try
+            {
+                var escola = await _unitOfWork.Escolas.FindAsync(caracteristicaEscolaDTO.EscolaId);
+                if (escola == null)
+                    throw new ValidationException("Escola não encontrada");
+
+                CaracteristicaModel caracteristica;
+
+                if (caracteristicaEscolaDTO.CaracteristicaId.HasValue)
+                {
+                    caracteristica = await _unitOfWork.Caracteristicas.FindAsync(caracteristicaEscolaDTO.CaracteristicaId.Value);
+                    if (caracteristica == null)
+                        throw new ValidationException("Característica não encontrada");
+                }
+                else if (!string.IsNullOrEmpty(caracteristicaEscolaDTO.DescricaoCaracteristica))
+                {
+                    caracteristica = new CaracteristicaModel { Descricao = caracteristicaEscolaDTO.DescricaoCaracteristica };
+                    await _unitOfWork.Caracteristicas.AddAsync(caracteristica);
+                }
+                else
+                {
+                    throw new ValidationException("Informe CaracteristicaId ou DescricaoCaracteristica");
+                }
+
+                var caracteristicaEscola = new CaracteristicasEscolaModel
+                {
+                    EscolaId = caracteristicaEscolaDTO.EscolaId,
+                    CaracteristicaId = caracteristica.CaracteristicaId,
+                    Descricao = caracteristica.Descricao,
+                    NotaMedia = 0
+                };
+
+                await _unitOfWork.CaracteristicasEscolas.AddAsync(caracteristicaEscola);
+                await _unitOfWork.CommitAsync();
+
+                return _mapper.Map<CaracteristicaReadDTO>(caracteristica);
+            }
+            catch (ValidationException ex)
+            {
+                throw new ValidationException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao adicionar característica à escola: " + ex.Message);
+            }
         }
     }
 }
