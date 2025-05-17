@@ -81,6 +81,7 @@ namespace EscolaTransparente.Application.Services
                 .Include(e => e.Endereco)
                 .Include(e => e.CaracteristicasEscola)
                     .ThenInclude(ce => ce.Caracteristica)
+                .Include(ce => ce.Avaliacoes)
                 .FirstOrDefaultAsync(e => e.EscolaId == escolaId);
 
                 if (escola is null)
