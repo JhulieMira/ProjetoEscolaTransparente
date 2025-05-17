@@ -1,11 +1,14 @@
-﻿using EscolaTransparente.Application.Data.DataTransferObjects.Escola;
+﻿using EscolaTransparente.API.Attributes;
+using EscolaTransparente.Application.Data.DataTransferObjects.Escola;
 using EscolaTransparente.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EscolaTransparente.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class EscolaController : ControllerBase
     {
         private readonly IEscolaAppService _escolaService;
@@ -15,6 +18,7 @@ namespace EscolaTransparente.API.Controllers
         }
 
         [HttpGet("{escolaId:int}")]
+        [AuthorizeRolesAndClaims(roles: new[] { "admin" })]
         public async Task<ActionResult<EscolaDetalhadaReadDTO>> ObterPorId([FromRoute]int escolaId)
         {
             try

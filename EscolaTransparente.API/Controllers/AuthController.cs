@@ -70,7 +70,7 @@ namespace EscolaTransparente.API.Controllers
 
             if (result.Succeeded)
             {
-                var token = GenerateJwtToken(user);
+                var token = await GenerateJwtToken(user);
                 return Ok(new { token });
             }
 
@@ -106,6 +106,29 @@ namespace EscolaTransparente.API.Controllers
 
             if (result.Succeeded)
                 return Ok($"Claim '{claimType}:{claimValue}' adicionada!");
+
+            return BadRequest(result.Errors);
+        }
+
+        [HttpPost("addRoleToUser")]
+        public async Task<IActionResult> AddRoleToUser(string userId, string roleName)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                return NotFound(new { message = "Usuário não encontrado" });
+
+            var roleExists = await _roleManager.RoleExistsAsync(roleName);
+            if (!roleExists)
+                return BadRequest(new { message = "Role não existe" });
+
+            var userRoles = await _userManager.GetRolesAsync(user);
+            if (userRoles.Contains(roleName))
+                return BadRequest(new { message = "Usuário já possui esta role" });
+
+            var result = await _userManager.AddToRoleAsync(user, roleName);
+
+            if (result.Succeeded)
+                return Ok(new { message = $"Role '{roleName}' adicionada ao usuário com sucesso" });
 
             return BadRequest(result.Errors);
         }
@@ -165,17 +188,26 @@ namespace EscolaTransparente.API.Controllers
             return IdentityResult.Success;
         }
 
-
-        private string GenerateJwtToken(IdentityUser user)
+        private async Task<string> GenerateJwtToken(Usuario user)
         {
             var jwtSettings = _configuration.GetSection("JwtSettings");
 
+            // Obtém as roles do usuário
+            var userRoles = await _userManager.GetRolesAsync(user);
+            var roleClaims = userRoles.Select(role => new Claim(ClaimTypes.Role, role));
+
+            // Obtém as claims do usuário
+            var userClaims = await _userManager.GetClaimsAsync(user);
+
+            // Combina todas as claims
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.Id)
-            };
+            }
+            .Union(roleClaims)
+            .Union(userClaims);
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
