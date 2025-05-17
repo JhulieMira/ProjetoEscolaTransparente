@@ -22,6 +22,27 @@ namespace EscolaTransparente.Application.Services
             _avaliacaoService = avaliacaoService;
         }
 
+        public async Task<List<AvaliacaoReadDTO?>> ObterAvaliacoesPorEscolaId(int escolaId)
+        {
+            try
+            {
+                var avaliacao = await _unitOfWork.Avaliacoes
+                    .Include(a => a.Escola)
+                    .Include(a => a.Caracteristica)
+                    .Include(a => a.RespostaAvaliacao)
+                    .Where(a => a.EscolaId == escolaId).ToListAsync();
+
+                if (avaliacao is null)
+                    return null;
+
+                return _mapper.Map<List<AvaliacaoReadDTO>>(avaliacao);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao obter avaliação: " + ex.Message);
+            }
+        }
+
         public async Task<AvaliacaoReadDTO?> ObterAvaliacaoPorId(int avaliacaoId)
         {
             try
@@ -42,6 +63,7 @@ namespace EscolaTransparente.Application.Services
                 throw new Exception("Erro ao obter avaliação: " + ex.Message);
             }
         }
+
 
         public async Task<AvaliacaoReadDTO> AdicionarAvaliacao(AvaliacaoInsertDTO avaliacaoDTO)
         {

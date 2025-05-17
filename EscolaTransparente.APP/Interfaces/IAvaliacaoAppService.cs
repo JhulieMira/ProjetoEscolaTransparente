@@ -9,5 +9,6 @@ namespace EscolaTransparente.Application.Interfaces
         Task<AvaliacaoReadDTO> AtualizarAvaliacao(int avaliacaoId, AvaliacaoUpdateDTO avaliacao);
         Task<bool> DeletarAvaliacao(int avaliacaoId);
         Task<List<AvaliacaoReadDTO>> AvaliarEscola(List<AvaliacaoInsertDTO> avaliacoes);
+        Task<List<AvaliacaoReadDTO?>> ObterAvaliacoesPorEscolaId(int escolaId);
     }
 } 

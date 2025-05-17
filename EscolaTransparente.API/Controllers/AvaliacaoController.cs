@@ -30,6 +30,24 @@ namespace EscolaTransparente.API.Controllers
             }
         }
 
+
+        [HttpGet("ObterAvaliacoesPorEscolaId/{escolaId:int}")]
+        public async Task<ActionResult<AvaliacaoReadDTO>> ObterAvaliacoesPorEscolaId([FromRoute] int escolaId)
+        {
+            try
+            {
+                var result = await _avaliacaoService.ObterAvaliacoesPorEscolaId(escolaId);
+
+                if (result is null) return NotFound();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("{avaliacaoId:int}")]
         public async Task<ActionResult<AvaliacaoReadDTO>> ObterPorId([FromRoute] int avaliacaoId)
         {
