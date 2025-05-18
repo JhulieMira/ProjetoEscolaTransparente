@@ -99,6 +99,28 @@ namespace EscolaTransparente.Application.Services
             }
         }
 
+        public async Task<EscolaReadDTO?> ObterEscolaBasicaPorId(int escolaId)
+        {
+            try
+            {
+                var escola = await _unitOfWork.Escolas
+                .Include(e => e.Contato)
+                .Include(e => e.Endereco)
+                .Include(e => e.CaracteristicasEscola)
+                    .ThenInclude(ce => ce.Caracteristica)
+                .FirstOrDefaultAsync(e => e.EscolaId == escolaId);
+
+                if (escola is null)
+                    return null;
+
+                return _mapper.Map<EscolaReadDTO>(escola);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao obter escola: " + ex.Message);
+            }
+        }
+
         public async Task<EscolaDetalhadaReadDTO> AtualizarEscola(int escolaId, EscolaUpdateDTO escolaDTO)
         {
             try

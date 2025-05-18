@@ -18,8 +18,26 @@ namespace EscolaTransparente.API.Controllers
             _escolaService = escolaService;
         }
 
+        [HttpGet("ObterEscolaResumida/{escolaId:int}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<object>> ObterPorEscolaResumoPorId([FromRoute] int escolaId)
+        {
+            try
+            {
+
+                var result = await _escolaService.ObterEscolaBasicaPorId(escolaId);
+                if (result is null) return NotFound();
+                return Ok(result);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("{escolaId:int}")]
-        public async Task<ActionResult<EscolaDetalhadaReadDTO>> ObterPorId([FromRoute]int escolaId)
+        public async Task<ActionResult<EscolaDetalhadaReadDTO>> ObterPorId([FromRoute] int escolaId)
         {
             try
             {
@@ -54,9 +72,9 @@ namespace EscolaTransparente.API.Controllers
         }
 
         [HttpPost("")]
-        public async Task<ActionResult<EscolaDetalhadaReadDTO>> Cadastrar([FromBody]EscolaInsertDTO escolaDTO)
+        public async Task<ActionResult<EscolaDetalhadaReadDTO>> Cadastrar([FromBody] EscolaInsertDTO escolaDTO)
         {
-            try     
+            try
             {
                 var result = await _escolaService.AdicionarEscola(escolaDTO);
                 return Ok(result);
@@ -71,12 +89,12 @@ namespace EscolaTransparente.API.Controllers
         [AuthorizeRolesAndClaims(
             roles: new[] { "gestor_escolar" }
         )]
-        public async Task<ActionResult<EscolaDetalhadaReadDTO>> Atualizar([FromRoute]int escolaId, [FromBody]EscolaUpdateDTO escolaDTO)
+        public async Task<ActionResult<EscolaDetalhadaReadDTO>> Atualizar([FromRoute] int escolaId, [FromBody] EscolaUpdateDTO escolaDTO)
         {
             try
             {
                 var result = await _escolaService.AtualizarEscola(escolaId, escolaDTO);
-                    return Ok(result);
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -85,7 +103,10 @@ namespace EscolaTransparente.API.Controllers
         }
 
         [HttpDelete("{escolaId:int}")]
-        public async Task<ActionResult> Deletar([FromRoute]int escolaId)
+        [AuthorizeRolesAndClaims(
+            roles: new[] { "admin" }
+        )]
+        public async Task<ActionResult> Deletar([FromRoute] int escolaId)
         {
             try
             {

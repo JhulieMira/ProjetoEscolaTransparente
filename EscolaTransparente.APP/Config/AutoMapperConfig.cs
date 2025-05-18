@@ -54,6 +54,7 @@ namespace EscolaTransparente.Application.Config
 
             // Escola mappings
             CreateMap<EscolaModel, EscolaDetalhadaReadDTO>();
+            CreateMap<EscolaModel, EscolaReadDTO>();
             CreateMap<EscolaInsertDTO, EscolaModel>();
             CreateMap<EscolaUpdateDTO, EscolaModel>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) =>
