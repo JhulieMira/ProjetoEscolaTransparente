@@ -1,12 +1,15 @@
-﻿using EscolaTransparente.Application.Data.DataTransferObjects.Avaliacao;
+﻿using EscolaTransparente.API.Attributes;
+using EscolaTransparente.Application.Data.DataTransferObjects.Avaliacao;
 using EscolaTransparente.Application.Data.DataTransferObjects.Caracteristica;
 using EscolaTransparente.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EscolaTransparente.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class AvaliacaoController : ControllerBase
     {
         private readonly IAvaliacaoAppService _avaliacaoService;
@@ -111,6 +114,7 @@ namespace EscolaTransparente.API.Controllers
         }
 
         [HttpPost("Caracteristica")]
+        [HttpPut("{escolaId:int}")]
         public async Task<ActionResult<CaracteristicaReadDTO>> AdicionarCaracteristica([FromBody] CaracteristicaInsertDTO caracteristica)
         {
             try
@@ -125,6 +129,10 @@ namespace EscolaTransparente.API.Controllers
         }
 
         [HttpPost("CaracteristicaEscola")]
+        [HttpPut("{escolaId:int}")]
+        [AuthorizeRolesAndClaims(
+            roles: new[] { "gestor_escolar" }
+        )]
         public async Task<ActionResult<CaracteristicaReadDTO>> AdicionarCaracteristicaEscola([FromBody] CaracteristicaEscolaInsertDTO caracteristicaEscola)
         {
             try
