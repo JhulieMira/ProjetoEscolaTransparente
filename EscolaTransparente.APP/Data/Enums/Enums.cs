@@ -6,7 +6,6 @@
         Fundamental1 = 1,
         Fundamental2 = 2,
         Medio = 3,
-        Superior = 4
     }
 
     public enum TipoInstituicao

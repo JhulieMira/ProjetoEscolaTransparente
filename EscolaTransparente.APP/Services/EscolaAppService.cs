@@ -8,6 +8,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
+using EscolaTransparente.Application.Data.Enums;
 
 namespace EscolaTransparente.Application.Services
 {
@@ -166,6 +167,50 @@ namespace EscolaTransparente.Application.Services
             }
         }
 
+        public async Task<List<EscolaDetalhadaReadDTO>> BuscarEscolas(EscolaSearchDTO searchParams)
+        {
+            try
+            {
+                var query = _unitOfWork.Escolas
+                    .Include(e => e.Contato)
+                    .Include(e => e.Endereco)
+                    .Include(e => e.CaracteristicasEscola)
+                        .ThenInclude(ce => ce.Caracteristica)
+                    .Include(e => e.Avaliacoes)
+                    .AsQueryable();
+
+                if (!string.IsNullOrWhiteSpace(searchParams.NomeEscola))
+                {
+                    query = query.Where(e => e.Nome.Contains(searchParams.NomeEscola));
+                }
+
+                if (!String.IsNullOrEmpty(searchParams.NivelEnsino))
+                {
+                    if (Enum.TryParse(searchParams.NivelEnsino, ignoreCase: true, out NivelEnsino nivelEnsinoEnum));
+                }
+
+                if (!string.IsNullOrWhiteSpace(searchParams.CEP))
+                {
+                    query = query.Where(e => e.Endereco.CEP == searchParams.CEP);
+                }
+
+
+                var escolas = await query.ToListAsync();
+
+                var escolasDTO = escolas.Select(e =>
+                {   
+                    var dto = _mapper.Map<EscolaDetalhadaReadDTO>(e);
+                    dto.NotaMedia = (short)(e.Avaliacoes.Any() ? e.Avaliacoes.Average(a => a.Nota) : 0);
+                    return dto;
+                }).ToList();
+
+                return escolasDTO;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao buscar escolas: " + ex.Message);
+            }
+        }
 
         private async Task<EscolaModel> PersistirERetornarEscolaCriada(EscolaModel escolaModel)
         {

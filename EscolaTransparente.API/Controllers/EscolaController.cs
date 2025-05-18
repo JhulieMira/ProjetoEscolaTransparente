@@ -120,5 +120,20 @@ namespace EscolaTransparente.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("Buscar")]
+        [AllowAnonymous]
+        public async Task<ActionResult<List<EscolaDetalhadaReadDTO>>> BuscarEscolas([FromBody] EscolaSearchDTO searchParams)
+        {
+            try
+            {
+                var result = await _escolaService.BuscarEscolas(searchParams);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

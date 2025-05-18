@@ -114,7 +114,6 @@ namespace EscolaTransparente.API.Controllers
         }
 
         [HttpPost("Caracteristica")]
-        [HttpPut("{escolaId:int}")]
         public async Task<ActionResult<CaracteristicaReadDTO>> AdicionarCaracteristica([FromBody] CaracteristicaInsertDTO caracteristica)
         {
             try

@@ -10,5 +10,6 @@ namespace EscolaTransparente.Application.Interfaces
         Task<EscolaDetalhadaReadDTO> AtualizarEscola(int escolaId, EscolaUpdateDTO escola);
         Task<bool> DeletarEscola(int escolaId);
         Task<List<EscolaDetalhadaReadDTO>> ObterTop10EscolasAsync();
+        Task<List<EscolaDetalhadaReadDTO>> BuscarEscolas(EscolaSearchDTO searchParams);
     }
 }
