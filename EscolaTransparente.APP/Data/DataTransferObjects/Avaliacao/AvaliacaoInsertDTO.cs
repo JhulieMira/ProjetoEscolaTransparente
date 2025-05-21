@@ -8,5 +8,6 @@
         public string DescricaoCaracteristica { get; set; }
         public short Nota { get; set; }
         public DateTime Data { get; set; }
+        public string? ConteudoAvaliacao { get; set; }
     }
 }

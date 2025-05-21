@@ -6,5 +6,6 @@
         public short Nota { get; set; }
         public string UsuarioId { get; set; }
         public DateTime Data { get; set; }
+        public string? ConteudoAvaliacao { get; set; }
     }
 }
