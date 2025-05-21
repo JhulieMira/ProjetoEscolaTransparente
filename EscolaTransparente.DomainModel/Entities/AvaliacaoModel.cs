@@ -11,7 +11,7 @@ namespace EscolaTransparente.Domain.Entities
         public int CaracteristicaId { get; set; }
         public short Nota { get; set; }
         public DateTime Data { get; set; }
-        public string ConteudoAvaliacao { get; set; }
+        public string? ConteudoAvaliacao { get; set; }
 
         public virtual EscolaModel Escola { get; set; }
         public virtual CaracteristicaModel Caracteristica { get; set; }
