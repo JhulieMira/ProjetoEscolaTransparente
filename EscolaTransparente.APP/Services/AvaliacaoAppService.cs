@@ -7,6 +7,7 @@ using EscolaTransparente.Domain.Interfaces.Services;
 using EscolaTransparente.Infraestructure.Data;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace EscolaTransparente.Application.Services
 {
@@ -15,42 +16,44 @@ namespace EscolaTransparente.Application.Services
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IAvaliacaoService _avaliacaoService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AvaliacaoAppService(IMapper mapper, IUnitOfWork unitOfWork, IAvaliacaoService avaliacaoService)
+        public AvaliacaoAppService(IMapper mapper, IUnitOfWork unitOfWork, IAvaliacaoService avaliacaoService, IHttpContextAccessor httpContextAccessor)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _avaliacaoService = avaliacaoService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<List<AvaliacaoPorEscolaRequestDTO?>> ObterAvaliacoesPorEscolaId(int escolaId)
-        {
-            try
+            public async Task<List<AvaliacaoPorEscolaRequestDTO?>> ObterAvaliacoesPorEscolaId(int escolaId)
             {
-                var avaliacoes = await (from a in _unitOfWork.Avaliacoes
-                                        join u in _unitOfWork.Usuario on a.UsuarioId equals u.Id
-                                        join c in _unitOfWork.Caracteristicas on a.CaracteristicaId equals c.CaracteristicaId
-                                        where a.EscolaId == escolaId
-                                        select new AvaliacaoPorEscolaRequestDTO
-                                        {
-                                            NomeUsuario = u.UserName,
-                                            Data = a.Data,
-                                            NomeCaracteristica = c.Descricao,
-                                            Nota = a.Nota,
-                                            ConteudoAvaliacao = a.ConteudoAvaliacao
-                                        }).ToListAsync(); 
+                try
+                {
+                    var avaliacoes = await (from a in _unitOfWork.Avaliacoes
+                                            join u in _unitOfWork.Usuario on a.UsuarioId equals u.Id
+                                            join c in _unitOfWork.Caracteristicas on a.CaracteristicaId equals c.CaracteristicaId
+                                            where a.EscolaId == escolaId
+                                            select new AvaliacaoPorEscolaRequestDTO
+                                            {
+                                                NomeUsuario = u.UserName,
+                                                Data = a.Data,
+                                                NomeCaracteristica = c.Descricao,
+                                                Nota = a.Nota,
+                                                ConteudoAvaliacao = a.ConteudoAvaliacao
+                                            }).ToListAsync(); 
                     
 
-                if (avaliacoes is null)
-                    return null;
+                    if (avaliacoes is null)
+                        return null;
 
-                return avaliacoes;
+                    return avaliacoes;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Erro ao obter avaliação: " + ex.Message);
+                }
             }
-            catch (Exception ex)
-            {
-                throw new Exception("Erro ao obter avaliação: " + ex.Message);
-            }
-        }
 
         public async Task<AvaliacaoReadDTO?> ObterAvaliacaoPorId(int avaliacaoId)
         {
@@ -180,8 +183,16 @@ namespace EscolaTransparente.Application.Services
         private async Task<List<AvaliacaoModel>> ProcessarERetornarListaAvaliacoesModel(List<AvaliacaoInsertDTO> avaliacoesDTO)
         {
             List<AvaliacaoModel> avaliacoesModel = new List<AvaliacaoModel>();
+            var userId = _httpContextAccessor.HttpContext?.User?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            
+            if (string.IsNullOrEmpty(userId))
+            {
+                throw new UnauthorizedAccessException("Usuário não autenticado");
+            }
+
             foreach (var dto in avaliacoesDTO)
             {
+                dto.UsuarioId = userId;
                 var model = _mapper.Map<AvaliacaoModel>(dto);
 
                 await ResolverDependenciasCaracteristicas(dto, model);
