@@ -10,7 +10,7 @@ namespace EscolaTransparente.Application.Interfaces
         Task<AvaliacaoReadDTO> AtualizarAvaliacao(int avaliacaoId, AvaliacaoUpdateDTO avaliacao);
         Task<bool> DeletarAvaliacao(int avaliacaoId);
         Task<List<AvaliacaoReadDTO>> AvaliarEscola(List<AvaliacaoInsertDTO> avaliacoes);
-        Task<List<AvaliacaoReadDTO?>> ObterAvaliacoesPorEscolaId(int escolaId);
+        Task<List<AvaliacaoPorEscolaRequestDTO?>> ObterAvaliacoesPorEscolaId(int escolaId);
         Task<List<CaracteristicaReadDTO>> ObterCaracteristicasEscolaPorEscolaId(int escolaId);
         Task<CaracteristicaReadDTO> AdicionarCaracteristica(CaracteristicaInsertDTO caracteristica);
         Task<CaracteristicaReadDTO> AdicionarCaracteristicaEscola(CaracteristicaEscolaInsertDTO caracteristicaEscola);

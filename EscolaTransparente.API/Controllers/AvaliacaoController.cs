@@ -36,7 +36,7 @@ namespace EscolaTransparente.API.Controllers
 
 
         [HttpGet("ObterAvaliacoesPorEscolaId/{escolaId:int}")]
-        public async Task<ActionResult<AvaliacaoReadDTO>> ObterAvaliacoesPorEscolaId([FromRoute] int escolaId)
+        public async Task<ActionResult<AvaliacaoPorEscolaRequestDTO>> ObterAvaliacoesPorEscolaId([FromRoute] int escolaId)
         {
             try
             {

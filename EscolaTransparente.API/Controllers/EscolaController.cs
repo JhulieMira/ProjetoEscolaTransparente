@@ -37,6 +37,7 @@ namespace EscolaTransparente.API.Controllers
         }
 
         [HttpGet("{escolaId:int}")]
+        [AllowAnonymous]
         public async Task<ActionResult<EscolaDetalhadaReadDTO>> ObterPorId([FromRoute] int escolaId)
         {
             try

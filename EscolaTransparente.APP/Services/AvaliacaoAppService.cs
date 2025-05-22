@@ -23,20 +23,28 @@ namespace EscolaTransparente.Application.Services
             _avaliacaoService = avaliacaoService;
         }
 
-        public async Task<List<AvaliacaoReadDTO?>> ObterAvaliacoesPorEscolaId(int escolaId)
+        public async Task<List<AvaliacaoPorEscolaRequestDTO?>> ObterAvaliacoesPorEscolaId(int escolaId)
         {
             try
             {
-                var avaliacao = await _unitOfWork.Avaliacoes
-                    .Include(a => a.Escola)
-                    .Include(a => a.Caracteristica)
-                    .Include(a => a.RespostaAvaliacao)
-                    .Where(a => a.EscolaId == escolaId).ToListAsync();
+                var avaliacoes = await (from a in _unitOfWork.Avaliacoes
+                                        join u in _unitOfWork.Usuario on a.UsuarioId equals u.Id
+                                        join c in _unitOfWork.Caracteristicas on a.CaracteristicaId equals c.CaracteristicaId
+                                        where a.EscolaId == escolaId
+                                        select new AvaliacaoPorEscolaRequestDTO
+                                        {
+                                            NomeUsuario = u.UserName,
+                                            Data = a.Data,
+                                            NomeCaracteristica = c.Descricao,
+                                            Nota = a.Nota,
+                                            ConteudoAvaliacao = a.ConteudoAvaliacao
+                                        }).ToListAsync(); 
+                    
 
-                if (avaliacao is null)
+                if (avaliacoes is null)
                     return null;
 
-                return _mapper.Map<List<AvaliacaoReadDTO>>(avaliacao);
+                return avaliacoes;
             }
             catch (Exception ex)
             {

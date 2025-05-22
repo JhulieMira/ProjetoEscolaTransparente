@@ -19,8 +19,9 @@ namespace EscolaTransparente.Application.Config
             // Contato mappings
             CreateMap<ContatoModel, ContatoReadDTO>();
             CreateMap<ContatoInsertDTO, ContatoModel>();
-            
+
             // Avaliacao mappings
+
             CreateMap<AvaliacaoModel, AvaliacaoReadDTO>();
             CreateMap<AvaliacaoInsertDTO, AvaliacaoModel>()
                     .ForMember(dest => dest.AvaliacaoId, opt => opt.Ignore())
