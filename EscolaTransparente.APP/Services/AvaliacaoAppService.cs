@@ -30,30 +30,41 @@ namespace EscolaTransparente.Application.Services
         {
             try
             {
-                var avaliacoes = await (from a in _unitOfWork.Avaliacoes
-                                        join u in _unitOfWork.Usuario on a.UsuarioId equals u.Id
-                                        join c in _unitOfWork.Caracteristicas on a.CaracteristicaId equals c.CaracteristicaId
-                                        where a.EscolaId == escolaId
-                                        select new AvaliacaoPorEscolaRequestDTO 
-                                        {
-                                            NomeUsuario = u.UserName,
-                                            Data = a.Data,
-                                            NomeCaracteristica = c.Descricao,
-                                            Nota = a.Nota,
-                                            ConteudoAvaliacao = a.ConteudoAvaliacao
-                                        }).ToListAsync(); 
-                    
+                var dados = await (from a in _unitOfWork.Avaliacoes
+                                   join u in _unitOfWork.Usuario on a.UsuarioId equals u.Id into usuarios
+                                   from u in usuarios.DefaultIfEmpty()
+                                   join c in _unitOfWork.Caracteristicas on a.CaracteristicaId equals c.CaracteristicaId
+                                   where a.EscolaId == escolaId
+                                   select new
+                                   {
+                                       NomeUsuario = u != null ? u.UserName : "Usuário removido",
+                                       Avaliacao = new AvaliacaoRequestDTO
+                                       {
+                                           Data = a.Data,
+                                           NomeCaracteristica = c.Descricao,
+                                           Nota = a.Nota,
+                                           ConteudoAvaliacao = a.ConteudoAvaliacao
+                                       }
+                                   }).ToListAsync();
 
-                if (avaliacoes is null)
-                    return null;
+                // Agrupar por usuário
+                var resultado = dados
+                    .GroupBy(x => x.NomeUsuario)
+                    .Select(g => new AvaliacaoPorEscolaRequestDTO
+                    {
+                        NomeUsuario = g.Key,
+                        Avaliacoes = g.Select(x => x.Avaliacao).ToList()
+                    })
+                    .ToList();
 
-                return avaliacoes;
+                return resultado;
             }
             catch (Exception ex)
             {
                 throw new Exception("Erro ao obter avaliação: " + ex.Message);
             }
         }
+
 
         public async Task<AvaliacaoReadDTO?> ObterAvaliacaoPorId(int avaliacaoId)
         {
