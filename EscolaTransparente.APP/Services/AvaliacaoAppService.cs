@@ -26,34 +26,34 @@ namespace EscolaTransparente.Application.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-            public async Task<List<AvaliacaoPorEscolaRequestDTO?>> ObterAvaliacoesPorEscolaId(int escolaId)
+        public async Task<List<AvaliacaoPorEscolaRequestDTO?>> ObterAvaliacoesPorEscolaId(int escolaId)
+        {
+            try
             {
-                try
-                {
-                    var avaliacoes = await (from a in _unitOfWork.Avaliacoes
-                                            join u in _unitOfWork.Usuario on a.UsuarioId equals u.Id
-                                            join c in _unitOfWork.Caracteristicas on a.CaracteristicaId equals c.CaracteristicaId
-                                            where a.EscolaId == escolaId
-                                            select new AvaliacaoPorEscolaRequestDTO
-                                            {
-                                                NomeUsuario = u.UserName,
-                                                Data = a.Data,
-                                                NomeCaracteristica = c.Descricao,
-                                                Nota = a.Nota,
-                                                ConteudoAvaliacao = a.ConteudoAvaliacao
-                                            }).ToListAsync(); 
+                var avaliacoes = await (from a in _unitOfWork.Avaliacoes
+                                        join u in _unitOfWork.Usuario on a.UsuarioId equals u.Id
+                                        join c in _unitOfWork.Caracteristicas on a.CaracteristicaId equals c.CaracteristicaId
+                                        where a.EscolaId == escolaId
+                                        select new AvaliacaoPorEscolaRequestDTO 
+                                        {
+                                            NomeUsuario = u.UserName,
+                                            Data = a.Data,
+                                            NomeCaracteristica = c.Descricao,
+                                            Nota = a.Nota,
+                                            ConteudoAvaliacao = a.ConteudoAvaliacao
+                                        }).ToListAsync(); 
                     
 
-                    if (avaliacoes is null)
-                        return null;
+                if (avaliacoes is null)
+                    return null;
 
-                    return avaliacoes;
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception("Erro ao obter avaliação: " + ex.Message);
-                }
+                return avaliacoes;
             }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao obter avaliação: " + ex.Message);
+            }
+        }
 
         public async Task<AvaliacaoReadDTO?> ObterAvaliacaoPorId(int avaliacaoId)
         {
@@ -183,12 +183,7 @@ namespace EscolaTransparente.Application.Services
         private async Task<List<AvaliacaoModel>> ProcessarERetornarListaAvaliacoesModel(List<AvaliacaoInsertDTO> avaliacoesDTO)
         {
             List<AvaliacaoModel> avaliacoesModel = new List<AvaliacaoModel>();
-            var userId = _httpContextAccessor.HttpContext?.User?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            
-            if (string.IsNullOrEmpty(userId))
-            {
-                throw new UnauthorizedAccessException("Usuário não autenticado");
-            }
+            var userId = await GetUserId();
 
             foreach (var dto in avaliacoesDTO)
             {
@@ -202,6 +197,17 @@ namespace EscolaTransparente.Application.Services
             }
 
             return avaliacoesModel;
+        }
+
+        private async Task<string> GetUserId()
+        {
+            var userEmail = _httpContextAccessor.HttpContext?.User?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var user = await _unitOfWork.Usuario.FirstOrDefaultAsync(u => u.Email == userEmail);
+
+            if (string.IsNullOrEmpty(user.Id))
+                throw new UnauthorizedAccessException("Usuário não autenticado");
+
+            return user.Id;
         }
 
         private async Task ResolverDependenciasCaracteristicas(AvaliacaoInsertDTO dto, AvaliacaoModel model)

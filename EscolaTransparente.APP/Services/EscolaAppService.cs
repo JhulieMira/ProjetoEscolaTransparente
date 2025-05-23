@@ -222,6 +222,14 @@ namespace EscolaTransparente.Application.Services
 
         private async Task<EscolaModel> MapearEValidarEscolaDTO(EscolaInsertDTO escola)
         {
+            escola.CaracteristicasEscola = new List<Data.DataTransferObjects.Caracteristica.CaracteristicasEscolaInsertDTO>
+            {
+                new Data.DataTransferObjects.Caracteristica.CaracteristicasEscolaInsertDTO
+                {
+                    CaracteristicaId = 18,
+                    Descricao = "Avaliação geral" //TO DO: Testar
+                }
+            };
             var escolaMapeada = _mapper.Map<EscolaModel>(escola);
             return await _escolaService.ValidarEscola(escolaMapeada);
         }
