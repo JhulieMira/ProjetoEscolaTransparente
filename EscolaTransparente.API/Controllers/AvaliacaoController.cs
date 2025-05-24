@@ -1,6 +1,7 @@
 ﻿using EscolaTransparente.API.Attributes;
 using EscolaTransparente.Application.Data.DataTransferObjects.Avaliacao;
 using EscolaTransparente.Application.Data.DataTransferObjects.Caracteristica;
+using EscolaTransparente.Application.Data.DataTransferObjects.RespostaAvaliacao;
 using EscolaTransparente.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +27,20 @@ namespace EscolaTransparente.API.Controllers
             try
             {
                 var result = await _avaliacaoService.AvaliarEscola(avaliacoes);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("ResponderAvaliacao")]
+        public async Task<ActionResult<RespostaReadAvaliacaoDTO>> ResponderAvaliacao([FromBody] RespostaAvaliacaoInsertDTO resposta)
+        {
+            try
+            {
+                var result = await _avaliacaoService.ResponderAvaliacao(resposta);
                 return Ok(result);
             }
             catch (Exception ex)

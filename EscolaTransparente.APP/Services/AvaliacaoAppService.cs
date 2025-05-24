@@ -8,6 +8,7 @@ using EscolaTransparente.Infraestructure.Data;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
+using EscolaTransparente.Application.Data.DataTransferObjects.RespostaAvaliacao;
 
 namespace EscolaTransparente.Application.Services
 {
@@ -146,6 +147,38 @@ namespace EscolaTransparente.Application.Services
             catch (Exception ex)
             {
                 throw new Exception("Erro ao deletar avaliação: " + ex.Message);
+            }
+        }
+
+        public async Task<RespostaReadAvaliacaoDTO> ResponderAvaliacao(RespostaAvaliacaoInsertDTO respostaDTO)
+        {
+            try
+            {
+                var avaliacao = await _unitOfWork.Avaliacoes
+                    .Include(a => a.RespostaAvaliacao)
+                    .FirstOrDefaultAsync(a => a.AvaliacaoId == respostaDTO.AvaliacaoId);
+
+                if (avaliacao is null)
+                    throw new ValidationException("Avaliação não encontrada");
+
+                if (avaliacao.RespostaAvaliacao != null)
+                    throw new ValidationException("Esta avaliação já possui uma resposta");
+
+                var respostaModel = _mapper.Map<RespostaAvaliacaoModel>(respostaDTO);
+                respostaModel.UsuarioId = await GetUserId();
+
+                await _unitOfWork.RespostasAvaliacao.AddAsync(respostaModel);
+                await _unitOfWork.CommitAsync();
+
+                return _mapper.Map<RespostaReadAvaliacaoDTO>(respostaModel);
+            }
+            catch (ValidationException ex)
+            {
+                throw new ValidationException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao responder avaliação: " + ex.Message);
             }
         }
 

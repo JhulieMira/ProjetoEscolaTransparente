@@ -1,5 +1,6 @@
 using EscolaTransparente.Application.Data.DataTransferObjects.Avaliacao;
 using EscolaTransparente.Application.Data.DataTransferObjects.Caracteristica;
+using EscolaTransparente.Application.Data.DataTransferObjects.RespostaAvaliacao;
 
 namespace EscolaTransparente.Application.Interfaces
 {
@@ -14,5 +15,6 @@ namespace EscolaTransparente.Application.Interfaces
         Task<List<CaracteristicaReadDTO>> ObterCaracteristicasEscolaPorEscolaId(int escolaId);
         Task<CaracteristicaReadDTO> AdicionarCaracteristica(CaracteristicaInsertDTO caracteristica);
         Task<CaracteristicaReadDTO> AdicionarCaracteristicaEscola(CaracteristicaEscolaInsertDTO caracteristicaEscola);
+        Task<RespostaReadAvaliacaoDTO> ResponderAvaliacao(RespostaAvaliacaoInsertDTO respostaDTO);
     }
 } 
