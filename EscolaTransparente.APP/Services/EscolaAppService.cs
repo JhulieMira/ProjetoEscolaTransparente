@@ -184,9 +184,9 @@ namespace EscolaTransparente.Application.Services
                     query = query.Where(e => e.Nome.Contains(searchParams.NomeEscola));
                 }
 
-                if (!String.IsNullOrEmpty(searchParams.NivelEnsino))
+                if (Enum.IsDefined(typeof(NivelEnsino), searchParams.NivelEnsino))
                 {
-                    if (Enum.TryParse(searchParams.NivelEnsino, ignoreCase: true, out NivelEnsino nivelEnsinoEnum));
+                    var nivelEnsinoEnum = (NivelEnsino)searchParams.NivelEnsino;
                 }
 
                 if (!string.IsNullOrWhiteSpace(searchParams.CEP))
