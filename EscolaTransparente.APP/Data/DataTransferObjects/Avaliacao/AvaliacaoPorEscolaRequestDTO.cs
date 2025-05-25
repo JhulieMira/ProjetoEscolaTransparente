@@ -1,4 +1,6 @@
-﻿namespace EscolaTransparente.Application.Data.DataTransferObjects.Avaliacao
+﻿using EscolaTransparente.Application.Data.DataTransferObjects.RespostaAvaliacao;
+
+namespace EscolaTransparente.Application.Data.DataTransferObjects.Avaliacao
 {
         public class AvaliacaoPorEscolaRequestDTO
         {
@@ -12,5 +14,6 @@
             public string NomeCaracteristica { get; set; }
             public short Nota { get; set; }
             public string? ConteudoAvaliacao { get; set; }
-        }
+            public RespostaReadAvaliacaoDTO RespostaAvaliacao { get; set; }
+    }
 }

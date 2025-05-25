@@ -35,6 +35,8 @@ namespace EscolaTransparente.Application.Services
                                    join u in _unitOfWork.Usuario on a.UsuarioId equals u.Id into usuarios
                                    from u in usuarios.DefaultIfEmpty()
                                    join c in _unitOfWork.Caracteristicas on a.CaracteristicaId equals c.CaracteristicaId
+                                   join r in _unitOfWork.RespostasAvaliacao on a.AvaliacaoId equals r.AvaliacaoId into respostas
+                                   from r in respostas.DefaultIfEmpty()
                                    where a.EscolaId == escolaId
                                    select new
                                    {
@@ -45,11 +47,17 @@ namespace EscolaTransparente.Application.Services
                                            Data = a.Data,
                                            NomeCaracteristica = c.Descricao,
                                            Nota = a.Nota,
-                                           ConteudoAvaliacao = a.ConteudoAvaliacao
+                                           ConteudoAvaliacao = a.ConteudoAvaliacao,
+                                           RespostaAvaliacao = r != null ? new RespostaReadAvaliacaoDTO
+                                           {
+                                               RespostaId = r.RespostaId,
+                                               AvaliacaoId = a.AvaliacaoId,
+                                               UsuarioId = u.UserName,
+                                               Resposta = r.Resposta,
+                                           } : null
                                        }
                                    }).ToListAsync();
 
-                // Agrupar por usuário
                 var resultado = dados
                     .GroupBy(x => x.NomeUsuario)
                     .Select(g => new AvaliacaoPorEscolaRequestDTO
@@ -66,6 +74,7 @@ namespace EscolaTransparente.Application.Services
                 throw new Exception("Erro ao obter avaliação: " + ex.Message);
             }
         }
+
 
 
         public async Task<AvaliacaoReadDTO?> ObterAvaliacaoPorId(int avaliacaoId)
