@@ -7,6 +7,7 @@
         }
         public class AvaliacaoRequestDTO
         {
+            public int AvaliacaoId { get; set; }
             public DateTime Data { get; set; }
             public string NomeCaracteristica { get; set; }
             public short Nota { get; set; }

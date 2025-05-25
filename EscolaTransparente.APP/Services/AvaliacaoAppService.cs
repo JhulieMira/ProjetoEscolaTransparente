@@ -41,6 +41,7 @@ namespace EscolaTransparente.Application.Services
                                        NomeUsuario = u != null ? u.UserName : "Usuário removido",
                                        Avaliacao = new AvaliacaoRequestDTO
                                        {
+                                           AvaliacaoId = a.AvaliacaoId,
                                            Data = a.Data,
                                            NomeCaracteristica = c.Descricao,
                                            Nota = a.Nota,
