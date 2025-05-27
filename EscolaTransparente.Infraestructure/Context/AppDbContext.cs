@@ -89,6 +89,7 @@ namespace EscolaTransparente.Infraestructure.Context
                 entity.Property(e => e.CaracteristicaId).IsRequired();
                 entity.Property(e => e.Data).HasDefaultValueSql("GETDATE()");
                 entity.Property(e => e.ConteudoAvaliacao);
+                entity.Property(e => e.AvaliacaoAnonima);
 
                 entity.HasOne(e => e.Escola)
                     .WithMany(c => c.Avaliacoes)

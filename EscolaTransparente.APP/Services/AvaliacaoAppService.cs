@@ -48,6 +48,7 @@ namespace EscolaTransparente.Application.Services
                                            NomeCaracteristica = c.Descricao,
                                            Nota = a.Nota,
                                            ConteudoAvaliacao = a.ConteudoAvaliacao,
+                                           AvaliacaoAnonima = a.AvaliacaoAnonima,
                                            RespostaAvaliacao = r != null ? new RespostaReadAvaliacaoDTO
                                            {
                                                RespostaId = r.RespostaId,
@@ -62,8 +63,9 @@ namespace EscolaTransparente.Application.Services
                     .GroupBy(x => x.NomeUsuario)
                     .Select(g => new AvaliacaoPorEscolaRequestDTO
                     {
-                        NomeUsuario = g.Key,
-                        Avaliacoes = g.Select(x => x.Avaliacao).ToList()
+                        NomeUsuario = g.Any(x => x.Avaliacao.AvaliacaoAnonima) ? "Usuário anônimo" : g.Key,
+                        Avaliacoes = g.Select(x => x.Avaliacao).ToList(),
+                        AvaliacaoAnonima = g.Any(x => x.Avaliacao.AvaliacaoAnonima)
                     })
                     .ToList();
 
