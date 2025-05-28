@@ -206,7 +206,11 @@ namespace EscolaTransparente.Application.Services
                 await _avaliacaoService.ValidarListaAvaliacoes(avaliacoesModel);
 
                 await _unitOfWork.CommitAsync(transaction);
-                return _mapper.Map<List<AvaliacaoReadDTO>>(avaliacoesModel);
+                var result = _mapper.Map<List<AvaliacaoReadDTO>>(avaliacoesModel);
+
+                await AtualizarNotaMediaEscola(avaliacoesDTO.Select(x => x.EscolaId).First());
+
+                return result;
             }
             catch (Exception ex)
             {
@@ -253,6 +257,22 @@ namespace EscolaTransparente.Application.Services
             }
 
             return avaliacoesModel;
+        }
+
+        private async Task AtualizarNotaMediaEscola(int escolaId)
+        {
+            var escola = await _unitOfWork.Escolas.FindAsync(escolaId);
+
+            if (escola is null)
+                throw new Exception("Escola não encontrada");
+
+            var mediaNota = await _unitOfWork.Avaliacoes.Where(a => a.EscolaId == escolaId)
+                .AverageAsync(a => a.Nota);
+
+            escola.NotaMedia = Convert.ToInt16(mediaNota);
+
+            _unitOfWork.Escolas.Update(escola);
+            _unitOfWork.Commit();
         }
 
         private async Task<string> GetUserId()
