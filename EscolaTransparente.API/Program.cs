@@ -10,6 +10,21 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configuração explícita da URL e porta
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(5000, listenOptions =>
+    {
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http1AndHttp2;
+    });
+});
+
+// Configuração de logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+builder.Logging.SetMinimumLevel(LogLevel.Debug);
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -46,14 +61,14 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.SetIsOriginAllowed(origin => true)
+        policy.WithOrigins(builder.Configuration.GetSection("AllowedOrigins").Get<string[]>() ?? new[] { "*" })
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
     });
 });
 
-// Configura��es JWT
+// Configurações JWT
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 
 builder.Services.AddIdentity<Usuario, IdentityRole>(options =>
@@ -98,18 +113,37 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.RegisterServices(builder.Configuration);
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
-{
-    var dbPath = Path.Combine(AppContext.BaseDirectory, "App_Data", "escola.db");
-    options.UseSqlite($"Data Source={dbPath}");
-});
+    options.UseSqlite(connectionString));
 
 var app = builder.Build();
+
+// Adiciona middleware de logging
+app.Use(async (context, next) =>
+{
+    var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
+    logger.LogInformation($"Request: {context.Request.Method} {context.Request.Path}");
+    try 
+    {
+        await next();
+        logger.LogInformation($"Response: {context.Response.StatusCode}");
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "Erro ao processar requisição");
+        throw;
+    }
+});
 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Escola Transparente API v1");
+        c.RoutePrefix = "swagger";
+    });
 }
 
 app.UseCors();
