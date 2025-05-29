@@ -17,6 +17,11 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
     {
         listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http1AndHttp2;
     });
+    serverOptions.ListenAnyIP(7222, listenOptions =>
+    {
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http1AndHttp2;
+        listenOptions.UseHttps();
+    });
 });
 
 // Configuração de logging
@@ -61,10 +66,16 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins(builder.Configuration.GetSection("AllowedOrigins").Get<string[]>() ?? new[] { "*" })
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
+        policy.WithOrigins(
+                "http://localhost:4200",  
+                "http://localhost:5000",  
+                "http://localhost:3000",  
+                "https://localhost:7222", 
+                "http://localhost:7222"  
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 
@@ -157,6 +168,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapFallbackToFile("index.html"); // Angular SPA fallback
+app.MapFallbackToFile("index.html");
+
+app.MapGet("/health", () => "API is running!");
 
 app.Run();
