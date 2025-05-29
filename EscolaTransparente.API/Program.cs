@@ -10,10 +10,7 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -44,6 +41,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+// CORS
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -55,6 +53,7 @@ builder.Services.AddCors(options =>
     });
 });
 
+// Configurações JWT
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 
 builder.Services.AddIdentity<Usuario, IdentityRole>(options =>
@@ -98,12 +97,15 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.RegisterServices(builder.Configuration);
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+{
+    var dbPath = Path.Combine(AppContext.BaseDirectory, "App_Data", "escola.db");
+    options.UseSqlite($"Data Source={dbPath}");
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -112,11 +114,15 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors();
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
+app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseHttpsRedirection();
-
 app.MapControllers();
+app.MapFallbackToFile("index.html"); // Angular SPA fallback
 
 app.Run();

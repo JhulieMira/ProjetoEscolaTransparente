@@ -6,6 +6,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+	<ItemGroup>
+		<Content Include="App_Data\**\*.*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.15" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
@@ -20,6 +26,9 @@
     <ProjectReference Include="..\EscolaTransparente.APP\EscolaTransparente.Application.csproj" />
     <ProjectReference Include="..\EscolaTransparente.Infraestructure\EscolaTransparente.Infraestructure.csproj" />
     <ProjectReference Include="..\EscolaTransparente.IoC\EscolaTransparente.IoC.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>
