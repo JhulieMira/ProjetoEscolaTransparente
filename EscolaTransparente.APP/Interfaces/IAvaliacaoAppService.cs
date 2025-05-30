@@ -16,5 +16,6 @@ namespace EscolaTransparente.Application.Interfaces
         Task<CaracteristicaReadDTO> AdicionarCaracteristica(CaracteristicaInsertDTO caracteristica);
         Task<CaracteristicaReadDTO> AdicionarCaracteristicaEscola(CaracteristicaEscolaInsertDTO caracteristicaEscola);
         Task<RespostaReadAvaliacaoDTO> ResponderAvaliacao(RespostaAvaliacaoInsertDTO respostaDTO);
+        Task<bool> VerificarSeUsuarioRealizouAvaliacao(int escolaId, string userId);
     }
 } 

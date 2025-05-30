@@ -159,5 +159,19 @@ namespace EscolaTransparente.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("VerificarAvaliacaoUsuario/{schoolId}/{userId}")]
+        public async Task<ActionResult<bool>> VerificarAvaliacaoUsuario([FromRoute] int schoolId, string userId)
+        {
+            try
+            {
+                var result = await _avaliacaoService.VerificarSeUsuarioRealizouAvaliacao(schoolId, userId);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

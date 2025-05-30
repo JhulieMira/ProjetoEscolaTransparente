@@ -367,6 +367,12 @@ namespace EscolaTransparente.Application.Services
             }
         }
 
+        public async Task<bool> VerificarSeUsuarioRealizouAvaliacao(int escolaId, string userId)
+        {
+            var avaliacoes = await _unitOfWork.Avaliacoes.Where(x => x.UsuarioId == userId && x.EscolaId == escolaId).ToListAsync();
+
+            return avaliacoes.Any();
+        }
         public async Task<CaracteristicaReadDTO> AdicionarCaracteristicaEscola(CaracteristicaEscolaInsertDTO caracteristicaEscolaDTO)
         {
             try

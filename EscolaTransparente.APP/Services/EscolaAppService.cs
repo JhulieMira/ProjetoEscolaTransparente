@@ -185,7 +185,7 @@ namespace EscolaTransparente.Application.Services
                     query = query.Where(e => e.Nome.Contains(searchParams.NomeEscola));
                 }
 
-                if (Enum.IsDefined(typeof(NivelEnsino), searchParams.NivelEnsino))
+                if (searchParams.NivelEnsino != null && Enum.IsDefined(typeof(NivelEnsino), searchParams.NivelEnsino))
                 {
                     var nivelEnsinoEnum = (NivelEnsino)searchParams.NivelEnsino;
                 }
